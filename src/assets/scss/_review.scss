@@ -1,0 +1,13 @@
+.stars {
+    color: #ddd;
+    font-size: 24px;
+  }
+  
+  .star {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .star.active {
+    color: gold;
+  }

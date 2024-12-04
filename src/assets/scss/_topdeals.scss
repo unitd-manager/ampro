@@ -1,0 +1,26 @@
+.top-deal-part{
+width: 100%;
+    height:350px;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+    
+}
+.top-deal-title{
+    width: 250px;
+        height:350px;
+        background-color: whitesmoke;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+.top-deal-products{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.top-deal-product{
+    margin: 5px;
+}
