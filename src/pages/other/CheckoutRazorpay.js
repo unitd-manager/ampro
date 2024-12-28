@@ -77,7 +77,7 @@ function CheckoutRazorpay({ amount, placeOrder,apikey }) {
       }
   
       // Fetch data from your server
-      const data = await fetch("https://foodecom.unitdtechnologies.com:2028/contact/getRazorpayEmail", {
+      const data = await fetch("http://192.64.114.83:2056/contact/getRazorpayEmail", {
         method: "POST",
       }).then((t) => t.json());
   

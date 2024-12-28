@@ -116,7 +116,7 @@ const OrderDetailsPage = ({ orderStatus }) => {
                             <Row>
                               <Col md={4}>
                                 <img
-                                  src={`https://foodecom.unitdtechnologies.com/storage/uploads/${item.images[0]}`}
+                                  src={`http://192.64.114.83/storage/uploads/${item.images[0]}`}
                                   alt="product image"
                                   style={{ height: "180px" }}
                                 />

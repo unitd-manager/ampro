@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-baseURL: 'https://foodecom.unitdtechnologies.com:2036',
+baseURL: 'http://192.64.114.83:2056',
 // baseURL:'http://43.228.126.245:3005',
 //baseURL: 'http://localhost:3001',
 });
