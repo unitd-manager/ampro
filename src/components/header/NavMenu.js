@@ -23,11 +23,11 @@ const NavMenu = ({ strings, menuWhiteClass, sidebarMenu, categories }) => {
           <li>
             <Link to={process.env.PUBLIC_URL + "/"}>{strings["home"]}</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to={process.env.PUBLIC_URL + "/offers"}>
               <span>Offers</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to={process.env.PUBLIC_URL + "/shop"}>
               {" "}

@@ -30,7 +30,7 @@ function convertCurrency(amount, exchangeRate) {
   return Math.round(amount * exchangeRate);
 }
 
-function CheckoutRazorpay({ amount, placeOrder,apikey }) {
+function CheckoutRazorpay({ amount, placeOrder}) {
   const [exchangeRate, setExchangeRate] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -86,7 +86,7 @@ function CheckoutRazorpay({ amount, placeOrder,apikey }) {
       const convertedAmount = amount;
 
       const options = {
-        key: apikey, // Enter the Key ID generated from the Dashboard
+        key: "rzp_test_yE3jJN90A3ObCp", // Enter the Key ID generated from the Dashboard
         amount: convertedAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         currency: data.currency,
         description: "Wallet Transaction",
