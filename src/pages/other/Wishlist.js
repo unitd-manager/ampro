@@ -29,7 +29,7 @@ const Wishlist = ({
   deleteFromWishlist,
   deleteAllFromWishlist,
   wishlistData,
-  fetchWishlistData,
+  //fetchWishlistData,
   removeWishlistData,
   clearWishlistData,
   insertCartData

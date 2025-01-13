@@ -40,7 +40,7 @@ const[loginModal , setLoginModal]=useState(false);
   product.images= String(product.images).split(',')
 console.log('file',product)
 console.log('images',product.images)
-const formattedTitle = product.title.replace(/\s+/g, '-');
+const formattedTitle = product?.title?.replace(/\s+/g, '-');
 
   return (
     <Fragment>
