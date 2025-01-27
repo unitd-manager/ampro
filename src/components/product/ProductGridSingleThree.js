@@ -15,6 +15,7 @@ const ProductGridSingleTwo = ({
   addToWishlist,
   addToCompare,
   onAddToCart,
+  onUpdateCart,
   onAddToWishlist,
   onAddToCompare,
   cartItem,
@@ -116,7 +117,12 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 </Link>
               ) : product.qty_in_stock && product.qty_in_stock > 0 ? (
                 <button
-                  onClick={() => { onAddToCart(product, addToast)}}
+                  onClick={() => { 
+                    if(cartItem?.quantity>0){
+                    product.qty+=cartItem?.quantity
+                    onUpdateCart(product,addToast)
+                  }else{
+                    onAddToCart(product, addToast)}}}
                   // className={
                   //   cartItem !== undefined && cartItem.quantity > 0
                   //     ? "active"

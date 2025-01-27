@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment,useState,useEffect } from "react";
 import { useToasts } from "react-toast-notifications";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 // import { getProducts } from "../../helpers/product";
 import ProductGridSingleThree from "../../components/product/ProductGridSingleThree";
 import { addToCart } from "../../redux/actions/cartActions";
@@ -10,9 +10,10 @@ import { addToCompare } from "../../redux/actions/compareActions";
 import api from "../../constants/api";
 import LoginModal from "../../components/LoginModal";
 import { getUser } from "../../common/user";
-import { insertCartData } from "../../redux/actions/cartItemActions";
+import { insertCartData,updateCartData } from "../../redux/actions/cartItemActions";
 import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
+//import cartItemReducer from "../../redux/reducers/cartItemReducer";
 
 const ProductGridThree = ({
   products,
@@ -27,7 +28,7 @@ const ProductGridThree = ({
   spaceBottomClass,
   colorClass,
   titlePriceClass,
-  insertCartData,
+  //insertCartData,
   insertWishlistData,
   insertCompareData
   // addToast
@@ -35,14 +36,29 @@ const ProductGridThree = ({
   const [user, setUser] = useState();
   const [loginModal,setLoginModal]=useState(false);
 const {addToast}=useToasts();
-
+//const {cartItems}=useSelector(cartItemReducer);
   const onAddToCart = (data) => {
     // if (avaiableQuantity === 0) {
     //   return;
     // }
+    console.log('data',data);
   if(user){
     data.contact_id=user.contact_id
   insertCartData(data,addToast)
+  }
+  else{
+    setLoginModal(true)
+  }   
+   
+  };
+  const onUpdateCart = (data) => {
+    // if (avaiableQuantity === 0) {
+    //   return;
+    // }
+    console.log('data',data);
+  if(user){
+    data.contact_id=user.contact_id
+    updateCartData(data,addToast)
   }
   else{
     setLoginModal(true)
@@ -95,6 +111,7 @@ const {addToast}=useToasts();
             onAddToCompare={onAddToCompare}
             addToWishlist={addToWishlist}
             onAddToCart={onAddToCart}
+            onUpdateCart={onUpdateCart}
             onAddToWishlist={onAddToWishlist}
             cartItem={
               cartItems.filter((cartItem) => cartItem.product_id === product.product_id)[0]

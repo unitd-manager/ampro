@@ -23,7 +23,7 @@ import {
   };
   
   const reducer = (state = initialState, action) => {
-    switch (action.type) {
+    switch (action) {
       case FETCH_CART_DATA_REQUEST:
         return {
           ...state,
