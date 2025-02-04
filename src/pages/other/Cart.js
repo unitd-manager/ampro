@@ -96,7 +96,7 @@ const Cart = ({ location }) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartItems.map((item, index) => (
+                      {cartItems?.map((item, index) => (
                         <tr key={index}>
                           <td className="product-thumbnail">
                             <Link to={`/product/${item.product_id}`}>
@@ -109,7 +109,7 @@ const Cart = ({ location }) => {
                           </td>
                           <td className="product-name">{item.title}</td>
                           <td className="product-price-cart">
-                            {currency.currencySymbol + item.price.toFixed(2)}
+                            {currency.currencySymbol + item?.price?.toFixed(2)}
                           </td>
                           <td className="product-quantity">
                             <div className="cart-plus-minus">

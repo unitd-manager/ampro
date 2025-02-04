@@ -53,7 +53,7 @@ const Footer = ({
           >
             {/* footer copyright */}
             <FooterCopyright
-              footerLogo="/images/United_Logo.png"
+              footerLogo="/images/Ampro_Logo.png"
               spaceBottomClass="mb-30"
             />
           </div>
