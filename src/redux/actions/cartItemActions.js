@@ -56,7 +56,7 @@ export const fetchCartData = (userInfo) => {
     
     return (dispatch) => {
       dispatch(updateCartDataRequest(data));
-  
+  console.log('updatecall');
       // Make the API call
       api
       .post("/contact/update-cart", data)

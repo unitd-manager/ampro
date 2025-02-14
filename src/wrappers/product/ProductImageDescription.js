@@ -25,6 +25,9 @@ const ProductImageDescription = ({
   const compareItem = compareItems.filter(
     compareItem => compareItem.id === product.product_id
   )[0];
+  const cartItem = cartItems.filter(
+    cartItem => cartItem.product_id === product.product_id
+  )[0];
   const { addToast } = useToasts();
 
   const discountedPrice = getDiscountPrice(product.price, product.discount_amount);
@@ -68,6 +71,7 @@ const ProductImageDescription = ({
               cartItems={cartItems}
               wishlistItem={wishlistItem}
               compareItem={compareItem}
+              cartItem={cartItem}
               addToast={addToast}
               comments={comments}
             />
@@ -93,7 +97,7 @@ ProductImageDescription.propTypes = {
 const mapStateToProps = state => {
   return {
     currency: state.currencyData,
-    cartItems: state.cartData,
+    cartItems: state.cartItems.cartItems,
     wishlistItems: state.wishlistData,
     compareItems: state.compareData
   };

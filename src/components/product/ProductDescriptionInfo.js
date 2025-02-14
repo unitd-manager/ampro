@@ -11,7 +11,7 @@ import Rating from "./sub-components/ProductRating";
 import api from "../../constants/api";
 import { Badge } from "reactstrap";
 import LoginModal from "../LoginModal";
-import { insertCartData } from "../../redux/actions/cartItemActions";
+import { insertCartData,updateCartData } from "../../redux/actions/cartItemActions";
 import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
 
@@ -22,6 +22,7 @@ const ProductDescriptionInfo = ({
   finalDiscountedPrice,
   finalProductPrice,
   cartItems,
+  cartItem,
   wishlistItem,
   compareItem,
   addToast,
@@ -30,6 +31,7 @@ const ProductDescriptionInfo = ({
   addToCompare,
   comments,
   insertCartData,
+  updateCartData,
   insertWishlistData,
   insertCompareData
 }) => {
@@ -51,10 +53,16 @@ const ProductDescriptionInfo = ({
     selectedProductSize
   );
   // const {addToast}=useToasts();
+ 
  const[user,setUser]=useState();
   const [sessionId, setSessionId] = useState('');
  const[loginModal,setLoginModal]=useState(false);
  const[proRating,setProRating]=useState(0);
+
+// console.log('cartItems detail',cartItems);
+
+console.log('cartItemprop detail',cartItem);
+
 
  const onAddToCart = (data) => {
    
@@ -70,6 +78,19 @@ const ProductDescriptionInfo = ({
   }
  
 };
+
+const onUpdateCart = (data) => {
+  // dispatch(addToCart(data, 1, "none", "none"));
+  if (user) {
+    data.contact_id = user.contact_id;
+    
+    updateCartData(data, addToast);
+  } else {
+    addToast("Please Login", { appearance: "warning", autoDismiss: true });
+    setLoginModal(true);
+  }
+};
+
 
 const onAddToWishlist = (data) => {
   if(user){
@@ -118,6 +139,7 @@ const onAddToCompare = (data) => {
     const rates=parseFloat(totalRating)/parseInt(comments.length)
     console.log('rates',rates)
     setProRating(rates)
+
   },[])
   return (
     <div className="product-details-content ml-70">
@@ -263,15 +285,18 @@ const onAddToCompare = (data) => {
           <div className="pro-details-cart btn-hover">
             {product && product.qty_in_stock > 0 ? (
               <button
-                onClick={() =>
-                  onAddToCart(
-                    product,
-                    addToast,
-                    quantityCount,
-                    selectedProductColor,
-                    selectedProductSize
-                  )
-                }
+              onClick={ () => { 
+                if(cartItem?.qty>0){
+                product.qty=parseFloat(cartItem?.qty) +Number( quantityCount);
+                product.basket_id=cartItem.basket_id;
+                onUpdateCart(product,addToast)
+              }else{
+                onAddToCart(product,
+                      addToast,
+                      quantityCount,
+                      selectedProductColor,
+                      selectedProductSize
+                  )}}}
                 disabled={productCartQty >= productStock}
               >
                 {" "}
@@ -358,6 +383,7 @@ ProductDescriptionInfo.propTypes = {
   addToCompare: PropTypes.func,
   addToWishlist: PropTypes.func,
   addToast: PropTypes.func,
+  cartItem: PropTypes.object,
   cartItems: PropTypes.array,
   compareItem: PropTypes.array,
   currency: PropTypes.object,
@@ -369,6 +395,7 @@ ProductDescriptionInfo.propTypes = {
   comments:PropTypes.array,
   insertCompareData: PropTypes.func,
   insertCartData: PropTypes.func, 
+  updateCartData:PropTypes.func,
   insertWishlistData: PropTypes.func,
 };
 
@@ -399,6 +426,9 @@ const mapDispatchToProps = dispatch => {
     },
     insertCartData: (item, addToast) => {
       dispatch(insertCartData(item, addToast));
+    },
+    updateCartData: (item, addToast) => {
+      dispatch(updateCartData(item, addToast));
     },
     insertWishlistData: (item, addToast) => {
       dispatch(insertWishlistData(item, addToast));

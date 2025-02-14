@@ -19,6 +19,7 @@ const ProductGridSingleTwo = ({
   onAddToWishlist,
   onAddToCompare,
   cartItem,
+  cartItems,
   wishlistItem,
   compareItem,
   sliderClassName,
@@ -45,6 +46,8 @@ const[loginModal , setLoginModal]=useState(false);
   product.images= String(product.images).split(',')
 console.log('file',product)
 console.log('images',product.images)
+console.log('cartItem',cartItem)
+console.log('cartItems',cartItems)
 const formattedTitle = product.title.replace(/\s+/g, '-');
 
   return (
@@ -117,12 +120,13 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 </Link>
               ) : product.qty_in_stock && product.qty_in_stock > 0 ? (
                 <button
-                  onClick={() => { 
-                    if(cartItem?.quantity>0){
-                    product.qty+=cartItem?.quantity
-                    onUpdateCart(product,addToast)
-                  }else{
-                    onAddToCart(product, addToast)}}}
+                onClick={ () => { 
+                  if(cartItem?.qty>0){
+                  product.qty=parseFloat(cartItem?.qty) +Number(1);
+                  product.basket_id=cartItem.basket_id;
+                  onUpdateCart(product,addToast)
+                }else{
+                  onAddToCart(product, addToast)}}}
                   // className={
                   //   cartItem !== undefined && cartItem.quantity > 0
                   //     ? "active"
@@ -210,7 +214,7 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
         </div>
       </div>
       {/* product modal */}
-      <ProductModal
+     {modalShow && <ProductModal
         show={modalShow}
         onHide={() => setModalShow(false)}
         product={product}
@@ -218,14 +222,15 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
         discountedprice={discountedPrice}
         finalproductprice={finalProductPrice}
         finaldiscountedprice={finalDiscountedPrice}
-        cartitem={cartItem}
+        cartItem={cartItem}
         wishlistitem={wishlistItem}
         compareitem={compareItem}
+        onUpdateCart={onUpdateCart}
         addtocart={onAddToCart}
         addtowishlist={onAddToWishlist}
         addtocompare={onAddToCompare}
         addToast={addToast}
-      />
+      />}
     </Fragment>
   );
 };

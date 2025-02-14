@@ -14,6 +14,7 @@ const ProductGridSingleTwo = ({
   addToCart,
   addToWishlist,
   addToCompare,
+  onUpdateCart,
   onAddToCart,
   onAddToWishlist,
   onAddToCompare,
@@ -41,6 +42,7 @@ const[loginModal , setLoginModal]=useState(false);
 console.log('file',product)
 console.log('images',product.images)
 const formattedTitle = product?.title?.replace(/\s+/g, '-');
+console.log('cartItem',cartItem);
 
   return (
     <Fragment>
@@ -112,7 +114,13 @@ const formattedTitle = product?.title?.replace(/\s+/g, '-');
                 </Link>
               ) : product.qty_in_stock && product.qty_in_stock > 0 ? (
                 <button
-                  onClick={() => { onAddToCart(product, addToast)}}
+                  onClick={ () => { 
+                    if(cartItem?.qty>0){
+                    product.qty=parseFloat(cartItem?.qty) +Number(1);
+                    product.basket_id=cartItem.basket_id;
+                    onUpdateCart(product,addToast)
+                  }else{
+                    onAddToCart(product, addToast)}}}
                   // className={
                   //   cartItem !== undefined && cartItem.quantity > 0
                   //     ? "active"
@@ -208,9 +216,10 @@ const formattedTitle = product?.title?.replace(/\s+/g, '-');
         discountedprice={discountedPrice}
         finalproductprice={finalProductPrice}
         finaldiscountedprice={finalDiscountedPrice}
-        cartitem={cartItem}
+        cartItem={cartItem}
         wishlistitem={wishlistItem}
         compareitem={compareItem}
+        onUpdateCart={onUpdateCart}
         addtocart={onAddToCart}
         addtowishlist={onAddToWishlist}
         addtocompare={onAddToCompare}
@@ -225,6 +234,7 @@ ProductGridSingleTwo.propTypes = {
   addToCompare: PropTypes.func,
   addToWishlist: PropTypes.func,
   onAddToCart: PropTypes.func,
+  onUpdateCart: PropTypes.func,
   onAddToWishlist: PropTypes.func,
   onAddToCompare: PropTypes.func,
   cartItem: PropTypes.object,

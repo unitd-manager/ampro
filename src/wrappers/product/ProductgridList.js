@@ -11,7 +11,7 @@ import api from "../../constants/api";
 import LoginModal from "../../components/LoginModal";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../common/user";
-import { insertCartData } from "../../redux/actions/cartItemActions";
+import { insertCartData,updateCartData } from "../../redux/actions/cartItemActions";
 import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
 
@@ -23,6 +23,7 @@ const ProductGrid = ({
   addToCompare,
   insertWishlistData,
   cartItems,
+  updateCartData,
   InsertToCart,
   wishlistItems,
   compareItems,
@@ -36,6 +37,21 @@ const[loginModal,setLoginModal]=useState(false);
 const [sessionId, setSessionId] = useState('');
 const { id } = useParams();
 console.log('user',user)
+  const onUpdateCart = (data) => {
+    // if (avaiableQuantity === 0) {
+    //   return;
+    // }
+    console.log('updatedata',data);
+  if(user){
+    console.log('user',user);
+    data.contact_id=user.contact_id
+    updateCartData(data,addToast)
+  }
+  else{
+    setLoginModal(true)
+  }   
+   
+  };
 
   const onAddToCart = (data) => {
    
@@ -103,6 +119,7 @@ console.log('user',user)
             product={product}
             currency={currency}
             onAddToCart={onAddToCart}
+            onUpdateCart={onUpdateCart}
             onAddToWishlist={onAddToWishlist}
             onAddToCompare={onAddToCompare}
             addToCart={addToCart}
@@ -110,7 +127,11 @@ console.log('user',user)
             addToWishlist={addToWishlist}
             addToCompare={addToCompare}
             user={user}
-
+            cartItem={
+              cartItems.filter(
+                cartItem => cartItem.product_id === product.product_id
+              )[0]
+            }
             compareItem={
               compareItems.filter(
                 compareItem => compareItem.product_id === product.product_id
@@ -136,6 +157,7 @@ ProductGrid.propTypes = {
   sliderClassName: PropTypes.string,
   spaceBottomClass: PropTypes.string,
   wishlistItems: PropTypes.array,
+  updateCartData: PropTypes.func,
   InsertToCart: PropTypes.func,
   insertWishlistData: PropTypes.func,
   insertCompareData:PropTypes.func
@@ -144,8 +166,7 @@ ProductGrid.propTypes = {
 const mapStateToProps = state => {
   return {
     currency: state.currencyData,
-    cartData: state.cartData,
-    cartItems:state.cartItems,
+    cartItems: state.cartItems.cartItems,
     wishlistItems: state.wishlistData,
     compareItems: state.compareItems.compareItems
   };
@@ -178,6 +199,9 @@ const mapDispatchToProps = dispatch => {
     },
     InsertToCart: (item, addToast) => {
       dispatch(insertCartData(item, addToast));
+    },
+    updateCartData: (item, addToast) => {
+      dispatch(updateCartData(item, addToast));
     },
     insertWishlistData:(item,addToast)=>{
       dispatch(insertWishlistData(item,addToast));

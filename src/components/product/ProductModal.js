@@ -11,7 +11,7 @@ import { addToWishlist } from "../../redux/actions/wishlistActions";
 import { addToCompare } from "../../redux/actions/compareActions";
 import imageBase from "../../constants/imageBase";
 import LoginModal from "../LoginModal";
-import { insertCartData } from "../../redux/actions/cartItemActions";
+import { insertCartData, updateCartData } from "../../redux/actions/cartItemActions";
 import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
 
@@ -21,6 +21,7 @@ const ProductModal = ({
   finalDiscountedPrice,
   finalProductPrice,
   cartItems,
+  cartItem,
   addToast,
   wishlistItem,
   compareItem,
@@ -29,6 +30,7 @@ const ProductModal = ({
   addToCompare,
   comments,
   insertCartData,
+  updateCartData,
   insertWishlistData,
   insertCompareData,
   currency,
@@ -60,7 +62,7 @@ const ProductModal = ({
   );
   const [quantityCount, setQuantityCount] = useState(1);
   const [sessionId, setSessionId] = useState("");
-
+console.log('modalcartitem',cartItem)
   // const productCartQty = getProductCartQuantity(
   //   cartItems,
   //   product,
@@ -73,6 +75,17 @@ const ProductModal = ({
       data.contact_id = user.contact_id;
       data.qty = quantityCount;
       insertCartData(data, addToast);
+    } else {
+      addToast("Please Login", { appearance: "warning", autoDismiss: true });
+      setLoginModal(true);
+    }
+  };
+  const onUpdateCart = (data) => {
+    // dispatch(addToCart(data, 1, "none", "none"));
+    if (user) {
+      data.contact_id = user.contact_id;
+      
+      updateCartData(data, addToast);
     } else {
       addToast("Please Login", { appearance: "warning", autoDismiss: true });
       setLoginModal(true);
@@ -360,15 +373,27 @@ const ProductModal = ({
                     <div className="pro-details-cart btn-hover">
                       {product && product.qty_in_stock > 0 ? (
                         <button
-                          onClick={() =>
-                            onAddToCart(
-                              product,
-                              addToast,
-                              quantityCount,
-                              selectedProductColor,
-                              selectedProductSize
-                            )
-                          }
+                          // onClick={() =>
+                          //   onAddToCart(
+                          //     product,
+                          //     addToast,
+                          //     quantityCount,
+                          //     selectedProductColor,
+                          //     selectedProductSize
+                          //   )
+                          // }
+                          onClick={ () => { 
+                            if(cartItem?.qty>0){
+                            product.qty=parseFloat(cartItem?.qty) +Number( quantityCount);
+                            product.basket_id=cartItem.basket_id;
+                            onUpdateCart(product,addToast)
+                          }else{
+                            onAddToCart(product,
+                                  addToast,
+                                  quantityCount,
+                                  selectedProductColor,
+                                  selectedProductSize
+                              )}}}
                           disabled={ productStock}
                         >
                           {" "}
@@ -427,6 +452,7 @@ ProductModal.propTypes = {
   addtocompare: PropTypes.func,
   addtowishlist: PropTypes.func,
   // cartItems: PropTypes.array,
+  cartItem: PropTypes.object,
   compareitem: PropTypes.object,
   currency: PropTypes.object,
   discountedprice: PropTypes.number,
@@ -468,6 +494,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     insertCartData: (item, addToast) => {
       dispatch(insertCartData(item, addToast));
+    },
+    updateCartData: (item, addToast) => {
+      dispatch(updateCartData(item, addToast));
     },
     insertWishlistData: (item, addToast) => {
       dispatch(insertWishlistData(item, addToast));

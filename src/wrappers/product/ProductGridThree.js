@@ -30,66 +30,70 @@ const ProductGridThree = ({
   titlePriceClass,
   //insertCartData,
   insertWishlistData,
-  insertCompareData
+  insertCompareData,
   // addToast
+  updateCartData,
+  InsertToCart
 }) => {
   const [user, setUser] = useState();
   const [loginModal,setLoginModal]=useState(false);
 const {addToast}=useToasts();
-//const {cartItems}=useSelector(cartItemReducer);
-  const onAddToCart = (data) => {
-    // if (avaiableQuantity === 0) {
-    //   return;
-    // }
-    console.log('data',data);
-  if(user){
-    data.contact_id=user.contact_id
-  insertCartData(data,addToast)
-  }
-  else{
-    setLoginModal(true)
-  }   
-   
-  };
-  const onUpdateCart = (data) => {
-    // if (avaiableQuantity === 0) {
-    //   return;
-    // }
-    console.log('data',data);
-  if(user){
-    data.contact_id=user.contact_id
-    updateCartData(data,addToast)
-  }
-  else{
-    setLoginModal(true)
-  }   
-   
-  };
-
-  const onAddToWishlist = (data) => {
-    if(user){
-  
-      data.contact_id=user.contact_id
-   insertWishlistData(data,addToast)
-    
-  }
-    else{
-      addToast("Please Login", { appearance: "warning", autoDismiss: true });
-      setLoginModal(true)
-      }
-  };
-  const onAddToCompare = (data) => {
- 
-    if(user){
-
-      data.contact_id = user.contact_id
-   insertCompareData(data,addToast)   
-  }
-  else{
-    addToast("Please Login", { appearance: "warning", autoDismiss: true });
-    setLoginModal(true)
-    }
+const onUpdateCart = (data) => {
+  // if (avaiableQuantity === 0) {
+  //   return;
+  // }
+  console.log('updatedata',data);
+if(user){
+  console.log('user',user);
+  data.contact_id=user.contact_id
+  updateCartData(data,addToast)
 }
+else{
+  setLoginModal(true)
+}   
+ 
+};
+
+const onAddToCart = (data) => {
+ 
+  if(user){
+    if(data.price){
+  data.contact_id=user.contact_id
+
+  InsertToCart(data,addToast);}
+  }
+  else{
+    addToast("Please Login", { appearance: "warning", autoDismiss: true })
+    setLoginModal(true)
+  }
+ 
+};
+
+const onAddToWishlist = (data) => {
+  if(user){
+
+    data.contact_id=user.contact_id
+    insertWishlistData(data,addToast);
+  
+}
+  else{
+    addToast("Please Login", { appearance: "warning", autoDismiss: true })
+    setLoginModal(true)
+  }
+};
+
+const onAddToCompare = (data) => {
+
+  if(user){
+
+    data.contact_id = user.contact_id
+ insertCompareData(data,addToast)  
+}
+  else{
+    addToast("Please Login", { appearance: "warning", autoDismiss: true })
+    setLoginModal(true)
+  }
+};
   useEffect(()=>{
     const userData = getUser();
    
@@ -110,9 +114,10 @@ const {addToast}=useToasts();
             addToCart={addToCart}
             onAddToCompare={onAddToCompare}
             addToWishlist={addToWishlist}
-            onAddToCart={onAddToCart}
+            onAddToCart={onAddToCart} 
             onUpdateCart={onUpdateCart}
             onAddToWishlist={onAddToWishlist}
+            cartItems={cartItems}
             cartItem={
               cartItems.filter((cartItem) => cartItem.product_id === product.product_id)[0]
             }
@@ -148,14 +153,16 @@ ProductGridThree.propTypes = {
   spaceBottomClass: PropTypes.string,
   colorClass: PropTypes.string,
   titlePriceClass: PropTypes.string,
-  wishlistItems: PropTypes.array
+  wishlistItems: PropTypes.array,
+   updateCartData: PropTypes.func,
+    InsertToCart: PropTypes.func,
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
   
     currency: state.currencyData,
-    cartItems: state.cartData,
+    cartItems: state.cartItems.cartItems,
     wishlistItems: state.wishlistData,
     compareItems: state.compareItems.compareItems
   };
@@ -188,6 +195,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     insertCartData: (item, addToast) => {
       dispatch(insertCartData(item, addToast));
+    },
+    InsertToCart: (item, addToast) => {
+      dispatch(insertCartData(item, addToast));
+    },
+    updateCartData: (item, addToast) => {
+      dispatch(updateCartData(item, addToast));
     },
     insertWishlistData: (item, addToast) => {
       dispatch(insertWishlistData(item, addToast));
