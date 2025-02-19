@@ -1,0 +1,22 @@
+.button-group {
+    display: flex; /* Make links side-by-side */
+    gap: 10px; /* Space between buttons */
+  }
+  
+  .checkout-btn, .clear-btn {
+    padding: 10px 15px;
+    background-color: #007bff; /* Blue for checkout */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .clear-btn {
+    background-color: #dc3545; /* Red for clear cart */
+  }
+  
+  .checkout-btn:hover, .clear-btn:hover {
+    opacity: 0.8;
+  }
+  

@@ -1,4 +1,10 @@
-import React, { Fragment, useState, useEffect, useMemo, useCallback } from "react";
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from "react";
 import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import MetaTags from "react-meta-tags";
@@ -6,13 +12,14 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { useSelector, useDispatch } from "react-redux";
 import LayoutOne from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import { 
-  fetchCartData, 
-  removeCartData, 
-  clearCartData, 
-  updateCartData 
+import {
+  fetchCartData,
+  removeCartData,
+  clearCartData,
+  updateCartData,
 } from "../../redux/actions/cartItemActions";
 import imageBase from "../../constants/imageBase";
+import "../../assets/css/button.css";
 
 const Cart = ({ location }) => {
   const { addToast } = useToasts();
@@ -56,8 +63,16 @@ const Cart = ({ location }) => {
     [dispatch, addToast]
   );
 
+  // const handleClearCart = useCallback(() => {
+  //   dispatch(clearCartData(user));
+  // }, [dispatch, user]);
   const handleClearCart = useCallback(() => {
-    dispatch(clearCartData(user));
+    const confirmClear = window.confirm(
+      "Are you sure you want to clear the cart?"
+    );
+    if (confirmClear) {
+      dispatch(clearCartData(user));
+    }
   }, [dispatch, user]);
 
   useEffect(() => {
@@ -70,11 +85,16 @@ const Cart = ({ location }) => {
     <Fragment>
       <MetaTags>
         <title>Pearl | Cart</title>
-        <meta name="description" content="Cart page of Pearl eCommerce template." />
+        <meta
+          name="description"
+          content="Cart page of Pearl eCommerce template."
+        />
       </MetaTags>
 
       <BreadcrumbsItem to={process.env.PUBLIC_URL + "/"}>Home</BreadcrumbsItem>
-      <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>Cart</BreadcrumbsItem>
+      <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>
+        Cart
+      </BreadcrumbsItem>
 
       <LayoutOne headerTop="visible">
         <Breadcrumb />
@@ -149,10 +169,21 @@ const Cart = ({ location }) => {
                 </div>
                 <div className="grand-totall">
                   <h4>
-                    Grand Total: {currency.currencySymbol + cartTotalPrice.toFixed(2)}
+                    Grand Total:{" "}
+                    {currency.currencySymbol + cartTotalPrice.toFixed(2)}
                   </h4>
-                  <Link to="/checkout">Proceed to Checkout</Link>
-                  <button onClick={handleClearCart}>Clear Cart</button>
+                  <div className="button-group">
+                    <Link to="/checkout" className="checkout-btn">
+                      Proceed to Checkout
+                    </Link>
+                    <Link
+                      onClick={handleClearCart}
+                      className="clear-btn"
+                      style={{ backgroundColor: "red", color: "white" }}
+                    >
+                      Clear Cart
+                    </Link>
+                  </div>
                 </div>
               </Fragment>
             ) : (

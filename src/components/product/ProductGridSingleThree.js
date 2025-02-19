@@ -155,7 +155,7 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 <i className="fa fa-eye"></i>
               </button>
      
-              <button
+              {/* <button
                 className={compareItem !== undefined ? "active" : ""}
                 disabled={compareItem !== undefined}
                 title={
@@ -166,7 +166,7 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 onClick={() => {onAddToCompare(product,addToast)}}
               >
                 <i className="fa fa-retweet"></i>
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="product-content-2">
