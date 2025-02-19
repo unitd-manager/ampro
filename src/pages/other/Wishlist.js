@@ -123,6 +123,7 @@ getWishlistItems(userInfo)
                               wishlistItem.price,
                               wishlistItem.discount_amount
                             );
+                            console.log('qty_in_stock',wishlistItem)
                             const finalProductPrice = (
                               wishlistItem.price
                             );
@@ -200,8 +201,8 @@ getWishlistItems(userInfo)
                                     >
                                       Select option
                                     </Link>
-                                  ) : wishlistItem.qty &&
-                                    wishlistItem.qty > 0 ? (
+                                  ) : wishlistItem.qty_in_stock &&
+                                    wishlistItem.qty_in_stock > 0 ? (
                                     <button
                                       onClick={() => onAddToCart(wishlistItem)}
                                       className={

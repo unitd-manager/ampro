@@ -71,6 +71,8 @@ console.log('modalcartitem',cartItem)
   // );
   const onAddToCart = (data) => {
     // dispatch(addToCart(data, 1, "none", "none"));
+
+    console.log('data',data)
     if (user) {
       data.contact_id = user.contact_id;
       data.qty = quantityCount;
@@ -417,7 +419,7 @@ console.log('modalcartitem',cartItem)
                         <i className="pe-7s-like" />
                       </button>
                     </div>
-                    <div className="pro-details-compare">
+                    {/* <div className="pro-details-compare">
                       <button
                         className={compareItem !== undefined ? "active" : ""}
                         disabled={compareItem !== undefined}
@@ -430,7 +432,7 @@ console.log('modalcartitem',cartItem)
                       >
                         <i className="pe-7s-shuffle" />
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>
