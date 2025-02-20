@@ -20,6 +20,10 @@ export const CLEAR_CART_DATA_REQUEST = 'CLEAR_CART_DATA_REQUEST';
 export const CLEAR_CART_DATA_SUCCESS = 'CLEAR_CART_DATA_SUCCESS';
 export const CLEAR_CART_DATA_FAILURE = 'CLEAR_CART_DATA_FAILURE';
 
+export const EMPTY_CART_DATA_REQUEST = 'EMPTY_CART_DATA_REQUEST';
+export const EMPTY_CART_DATA_SUCCESS = 'EMPTY_CART_DATA_SUCCESS';
+export const EMPTY_CART_DATA_FAILURE = 'EMPTY_CART_DATA_FAILURE';
+
 export const fetchCartData = (userInfo) => {
     return (dispatch) => {
       dispatch(fetchDataRequest({contact_id:userInfo.contact_id}));
@@ -51,7 +55,13 @@ export const fetchCartData = (userInfo) => {
     };
   };
 
-   
+  export const emptyCartData = () => {
+    return (dispatch) => {
+      dispatch(emptyCartDataRequest());
+      dispatch(emptyCartDataSuccess([])); // Empty the cart locally
+    };
+  };
+  
   export const updateCartData = (data,addToast) => {
     
     return (dispatch) => {
@@ -171,5 +181,19 @@ export const fetchCartData = (userInfo) => {
   
   export const clearCartDataFailure = (error) => ({
     type: CLEAR_CART_DATA_FAILURE,
+    payload: error,
+  });
+
+  export const emptyCartDataRequest = () => ({
+    type: EMPTY_CART_DATA_REQUEST,
+  });
+  
+  export const emptyCartDataSuccess = (data) => ({
+    type: EMPTY_CART_DATA_SUCCESS,
+    payload: data,
+  });
+  
+  export const emptyCartDataFailure = (error) => ({
+    type: EMPTY_CART_DATA_FAILURE,
     payload: error,
   });

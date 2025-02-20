@@ -14,6 +14,8 @@ import {
   CLEAR_CART_DATA_REQUEST,
   CLEAR_CART_DATA_SUCCESS,
   CLEAR_CART_DATA_FAILURE,
+  EMPTY_CART_DATA_SUCCESS,
+  EMPTY_CART_DATA_FAILURE,
 } from '../actions/cartItemActions';
 
 const initialState = {
@@ -50,6 +52,20 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+
+      case EMPTY_CART_DATA_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          cartItems: [],
+          error: null,
+        };
+      case EMPTY_CART_DATA_FAILURE:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
 
     // Insert cart data
     case INSERT_CART_DATA_SUCCESS:
