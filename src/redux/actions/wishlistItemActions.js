@@ -16,6 +16,10 @@ export const CLEAR_WISHLIST_DATA_REQUEST = 'CLEAR_WISHLIST_DATA_REQUEST';
 export const CLEAR_WISHLIST_DATA_SUCCESS = 'CLEAR_WISHLIST_DATA_SUCCESS';
 export const CLEAR_WISHLIST_DATA_FAILURE = 'CLEAR_WISHLIST_DATA_FAILURE';
 
+export const EMPTY_WISHLIST_DATA_REQUEST = 'EMPTY_WISHLIST_DATA_REQUEST';
+export const EMPTY_WISHLIST_DATA_SUCCESS = 'EMPTY_WISHLIST_DATA_SUCCESS';
+export const EMPTY_WISHLIST_DATA_FAILURE = 'EMPTY_WISHLIST_DATA_FAILURE';
+
 export const fetchWishlistData = (userInfo) => {
     return (dispatch) => {
       dispatch(fetchWishlistDataRequest({contact_id:userInfo.contact_id}));
@@ -63,6 +67,13 @@ export const fetchWishlistData = (userInfo) => {
     };
   };
 
+  export const emptyWishlistData = () => {
+    return (dispatch) => {
+      dispatch(emptyWishlistDataRequest());
+      dispatch(emptyWishlistDataSuccess([])); // Empty the wishlist locally
+    };
+  };
+  
   export const clearWishlistData = (user,addToast) => {
     return (dispatch) => {
       dispatch(clearWishlistDataRequest({contact_id:user.contact_id}));
@@ -137,3 +148,17 @@ export const fetchWishlistData = (userInfo) => {
     type: CLEAR_WISHLIST_DATA_FAILURE,
     payload: error,
   });
+
+   export const emptyWishlistDataRequest = () => ({
+      type: EMPTY_WISHLIST_DATA_REQUEST,
+    });
+    
+    export const emptyWishlistDataSuccess = (data) => ({
+      type: EMPTY_WISHLIST_DATA_SUCCESS,
+      payload: data,
+    });
+    
+    export const emptyWishlistDataFailure = (error) => ({
+      type: EMPTY_WISHLIST_DATA_FAILURE,
+      payload: error,
+    });

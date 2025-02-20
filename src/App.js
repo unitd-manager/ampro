@@ -11,7 +11,7 @@ import {
   fetchCartData,
   emptyCartData
 } from "../src/redux/actions/cartItemActions";
-
+import { fetchWishlistData, emptyWishlistData } from "../src/redux/actions/wishlistItemActions";
 
 // home pages
 
@@ -103,9 +103,11 @@ const App = (props) => {
      if (userdata) {
       console.log('fetching cart in app.js')
           dispatch(fetchCartData(userdata));
+          dispatch(fetchWishlistData(userdata));
         }else {
           console.log('empty cart in app.js')
       dispatch(emptyCartData(user)); // Clear cart when user logs out
+      dispatch(emptyWishlistData(user));
     }
   }, [user, dispatch]);
   return (

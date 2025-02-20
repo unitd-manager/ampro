@@ -10,7 +10,10 @@ import {
     REMOVE_WISHLIST_DATA_FAILURE,
     CLEAR_WISHLIST_DATA_REQUEST,
     CLEAR_WISHLIST_DATA_SUCCESS,
-    CLEAR_WISHLIST_DATA_FAILURE
+    CLEAR_WISHLIST_DATA_FAILURE,
+    EMPTY_WISHLIST_DATA_REQUEST,
+    EMPTY_WISHLIST_DATA_SUCCESS,
+    EMPTY_WISHLIST_DATA_FAILURE
   } from '../actions/wishlistItemActions';
   
   const initialState = {
@@ -97,6 +100,24 @@ import {
             loading: false,
             error: action.payload,
           };
+          case EMPTY_WISHLIST_DATA_REQUEST:
+            return {
+              ...state,
+              loading: true,
+              error: null,
+            };
+          case EMPTY_WISHLIST_DATA_SUCCESS:
+            return {
+              ...state,
+              loading: false,
+              wishlistItems:[]
+            };
+          case EMPTY_WISHLIST_DATA_FAILURE:
+            return {
+              ...state,
+              loading: false,
+              error: action.payload,
+            };
       default:
         return state;
     }
