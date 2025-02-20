@@ -48,6 +48,8 @@ const ProductModal = ({
   const [user, setUser] = useState();
   const [loginModal, setLoginModal] = useState(false);
 
+  console.log('productStockproduct',product);
+  console.log('productStock',productStock);
   console.log("proimage", product.images);
   const [gallerySwiper, getGallerySwiper] = useState(null);
   const [thumbnailSwiper, getThumbnailSwiper] = useState(null);
@@ -58,7 +60,7 @@ const ProductModal = ({
     product.variation ? product.variation[0].size[0].name : ""
   );
   const [productStock, setProductStock] = useState(
-    product.variation ? product.variation[0].size[0].stock : product.stock
+    product.variation ? product.variation[0].size[0].stock : product.qty_in_stock
   );
   const [quantityCount, setQuantityCount] = useState(1);
   const [sessionId, setSessionId] = useState("");
@@ -396,7 +398,7 @@ console.log('modalcartitem',cartItem)
                                   selectedProductColor,
                                   selectedProductSize
                               )}}}
-                          disabled={ productStock}
+                          disabled={ !productStock}
                         >
                           {" "}
                           Add To Cart{" "}
