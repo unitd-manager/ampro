@@ -77,7 +77,7 @@ function CheckoutRazorpay({ amount, placeOrder}) {
       }
   
       // Fetch data from your server
-      const data = await fetch("http://66.29.149.122:2003/contact/getRazorpayEmail", {
+      const data = await fetch("https://ampro.zaitunsoftsolutions.com:2004/contact/getRazorpayEmail", {
         method: "POST",
       }).then((t) => t.json());
   
