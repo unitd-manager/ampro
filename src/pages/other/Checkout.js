@@ -189,13 +189,13 @@ stripeToken && makeRequest();
     api
       .post('/commonApi/sendgmail',{to,dynamic_template_data})
       .then(() => {
-        addToast("Send Mail Successfully", {
+        addToast("Email Sent Successfully", {
           appearance: "success",
           autoDismiss: true,
         })
       })
       .catch(() => {
-        addToast("Send Mail Successfully", {
+        addToast("Email Sent Successfully", {
           appearance: "success",
           autoDismiss: true,
         })
@@ -264,7 +264,7 @@ stripeToken && makeRequest();
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | Checkout</title>
+        <title>Ampro | Checkout</title>
         <meta
           name="description"
           content="Checkout page of UnitdEcom react minimalist eCommerce template."

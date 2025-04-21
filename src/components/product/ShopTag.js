@@ -20,23 +20,17 @@ const ShopTag = ({ tags, getSortParams }) => {
   };
   return (
     <div className="sidebar-widget mt-50">
-      <h4 className="pro-sidebar-title">Tag </h4>
+      <h4 className="pro-sidebar-title">Tags </h4>
       <div className="sidebar-widget-tag mt-25">
         {tags ? (
           <ul>
-            {tags.map((tag, key) => {
-              return (
-                <li key={key}>
-                  <button
-                    onClick={e => {
-                      handleTagClick(tag,e);
-                  }}
-                  >
-                    {tag}
-                  </button>
-                </li>
-              );
-            })}
+            {tags.slice(0, 25).map((tag, key) => (
+            <li key={key}>
+              <button onClick={(e) => handleTagClick(tag, e)}>
+                {tag}
+              </button>
+            </li>
+          ))}
           </ul>
         ) : (
           "No tags found"

@@ -59,7 +59,7 @@
           span {
             &.count-style {
               color: #fff;
-              background-color: #000;
+              background-color: #1fb0c1;
             }
           }
         }
@@ -487,7 +487,7 @@
 
       visibility: hidden;
 
-      width: 125px;
+      width: 140px;
       padding: 8px 12px 10px;
 
       transition: all 0.5s ease 0s;
@@ -598,7 +598,7 @@
 
         color: #fff;
         border-radius: 100%;
-        background-color: #000;
+        background-color: #1fb0c1;
         @media #{$xl-layout} {
           right: -5px;
         }
@@ -789,7 +789,7 @@
             span {
               &.count-style {
                 color: #fff;
-                background-color: #000;
+                background-color: #1fb0c1;
               }
             }
           }
@@ -814,7 +814,7 @@
             span {
               &.count-style {
                 color: #fff;
-                background-color: #000;
+                background-color: #1fb0c1;
               }
             }
           }
@@ -929,7 +929,7 @@
         span {
           &.count-style {
             color: #fff;
-            background-color: #000;
+            background-color: #1fb0c1;
           }
         }
       }

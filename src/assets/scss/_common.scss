@@ -120,7 +120,7 @@ a:focus {
 }
 
 a:hover {
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 button,
@@ -1360,9 +1360,10 @@ select {
   width: 100%;
 
   color: #333;
-  border: 0 solid #eceff8;
+  border: 1px solid #eceff8;
   background: transparent;
   box-shadow: none;
+  padding: 7px 15px;
 }
 
 option {
@@ -1611,7 +1612,7 @@ textarea:focus {
   border: none;
   border-radius: 50px;
   background: none;
-  background-color: $theme-color;
+  background-color: #1fb0c1;
   &.show {
     visibility: visible;
 

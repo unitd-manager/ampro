@@ -1,39 +1,28 @@
-import PropTypes from "prop-types";
-import React, { Fragment, useState,useEffect } from "react";
+import PropTypes from "prop-types"; 
+import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import {v4 as uuid} from 'uuid';
+import { connect, useDispatch, useSelector } from "react-redux";
+import { v4 as uuid } from 'uuid';
 import { getProductCartQuantity } from "../../helpers/product";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist } from "../../redux/actions/wishlistActions";
 import { addToCompare } from "../../redux/actions/compareActions";
-import Rating from "./sub-components/ProductRating";
-import api from "../../constants/api";
+// import Rating from "./sub-components/ProductRating";
 import { Badge } from "reactstrap";
 import LoginModal from "../LoginModal";
-import { insertCartData,updateCartData } from "../../redux/actions/cartItemActions";
-import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
+import { fetchCartData, insertCartData, updateCartData } from "../../redux/actions/cartItemActions";
+import { insertWishlistData, removeWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
 
 const ProductDescriptionInfo = ({
   product,
-  discountedPrice,
-  currency,
-  finalDiscountedPrice,
-  finalProductPrice,
   cartItems,
   cartItem,
   wishlistItem,
-  compareItem,
   addToast,
-  addToCart,
-  addToWishlist,
-  addToCompare,
   comments,
-  insertCartData,
   updateCartData,
   insertWishlistData,
-  insertCompareData
 }) => {
   const [selectedProductColor, setSelectedProductColor] = useState(
     product.variation ? product.variation[0].color : ""
@@ -42,7 +31,7 @@ const ProductDescriptionInfo = ({
     product.variation ? product.variation[0].size[0].name : ""
   );
   const [productStock, setProductStock] = useState(
-    product.variation ? product.variation[0].size[0].stock : product.qty_in_stock
+    product?.variation ? product?.variation[0].size[0].stock : product?.qty_in_stock
   );
   const [quantityCount, setQuantityCount] = useState(1);
 
@@ -52,77 +41,77 @@ const ProductDescriptionInfo = ({
     selectedProductColor,
     selectedProductSize
   );
-  // const {addToast}=useToasts();
- 
- const[user,setUser]=useState();
+
+  const [user, setUser] = useState();
   const [sessionId, setSessionId] = useState('');
- const[loginModal,setLoginModal]=useState(false);
- const[proRating,setProRating]=useState(0);
+  const [loginModal, setLoginModal] = useState(false);
+  const [proRating, setProRating] = useState(0);
+  const [selectedProductGrade, setSelectedProductGrade] = useState("");
 
-// console.log('cartItems detail',cartItems);
+  const dispatch = useDispatch();
+  const wishlistItems = useSelector(state => state.wishlistItems.wishlistItems);
 
-console.log('cartItemprop detail',cartItem);
+  const onAddToCart = (data) => {
+    if (user) {
+      data.contact_id = user.contact_id;
+      data.qty = quantityCount;
+      dispatch(insertCartData(data, addToast))
+        .then(() => {
+          dispatch(fetchCartData(user));
+        })
+        .catch((error) => {
+          console.error('Failed to add to cart:', error);
+        });
+    } else {
+      addToast("Please Login", { appearance: "warning", autoDismiss: true });
+      setLoginModal(true);
+    }
+  };
 
+  const onUpdateCart = (data) => {
+    if (user) {
+      data.contact_id = user.contact_id;
+      updateCartData(data, addToast);
+    } else {
+      setLoginModal(true);
+    }
+  };
 
- const onAddToCart = (data) => {
-   
-  // dispatch(addToCart(data, 1, "none", "none"));
-  if(user){
-  data.contact_id=user.contact_id
-  data.qty=quantityCount
- insertCartData(data,addToast) 
-}
-  else{
-    addToast("Please Login", { appearance: "warning", autoDismiss: true })
-    setLoginModal(true)
-  }
- 
-};
+  const onAddToWishlist = (data) => {
+    if (user) {
+      data.contact_id = user.contact_id;
+      insertWishlistData(data, addToast);
+    } else {
+      setLoginModal(true);
+    }
+  }; 
 
-const onUpdateCart = (data) => {
-  // dispatch(addToCart(data, 1, "none", "none"));
-  if (user) {
-    data.contact_id = user.contact_id;
+  const hasValidGrades = (grades) => {
+    if (!grades || !Array.isArray(grades)) return false;
     
-    updateCartData(data, addToast);
-  } else {
-    addToast("Please Login", { appearance: "warning", autoDismiss: true });
-    setLoginModal(true);
-  }
-};
+    return grades.some(
+      grade => grade !== null && 
+              grade !== undefined && 
+              grade !== 'null' && 
+              String(grade).trim() !== ''
+    );
+  };
 
+  const validateBeforeCart = () => {
+    if (hasValidGrades(product?.grades) && !selectedProductGrade) {
+      addToast("Please select a grade before adding to cart", {
+        appearance: "error",
+        autoDismiss: true
+      });
+      return false;
+    }
+    return true;
+  };
 
-const onAddToWishlist = (data) => {
-  if(user){
-
-    data.contact_id=user.contact_id
-insertWishlistData(data,addToast)   
-}
-  else{
-    addToast("Please Login", { appearance: "warning", autoDismiss: true })
-    setLoginModal(true)
-  }
-};
-
-const onAddToCompare = (data) => {
-
-  if(user){
-
-    data.contact_id = user.contact_id
-  insertCompareData(data,addToast) 
-}
-  else{
-    addToast("Please Login", { appearance: "warning", autoDismiss: true })
-    setLoginModal(true)
-  }
-};
- console.log('productStock - productCartQty',productStock , productCartQty)
-  useEffect(()=>{
-    const userData = localStorage.getItem('user')
-    ? localStorage.getItem('user')
-    : null
-    const userInfo=JSON.parse(userData);
-    setUser(userInfo)
+  useEffect(() => {
+    const userData = localStorage.getItem('user') ? localStorage.getItem('user') : null;
+    const userInfo = JSON.parse(userData);
+    setUser(userInfo);
 
     const existingSessionId = localStorage.getItem('sessionId');
     if (existingSessionId) {
@@ -132,256 +121,194 @@ const onAddToCompare = (data) => {
       localStorage.setItem('sessionId', newSessionId);
       setSessionId(newSessionId);
     }
-    let totalRating=0;
-    comments.forEach(element => {
-      totalRating+=element.rating
-    });
-    const rates=parseFloat(totalRating)/parseInt(comments.length)
-    console.log('rates',rates)
-    setProRating(rates)
 
-  },[])
+    let totalRating = 0;
+    comments.forEach(element => {
+      totalRating += element.rating;
+    });
+    const rates = parseFloat(totalRating) / parseInt(comments.length);
+    setProRating(rates);
+  }, []);
+
   return (
     <div className="product-details-content ml-70">
-        {loginModal&&<LoginModal loginModal={loginModal} setLoginModal={setLoginModal} />}
+      {loginModal && <LoginModal loginModal={loginModal} setLoginModal={setLoginModal} />}
       <h2>{product.title}</h2>
-      <div className="product-details-price">
-        {discountedPrice !== null && discountedPrice !=='' ? (
-          <Fragment>
-            <span>{currency.currencySymbol + finalDiscountedPrice}</span>{" "}
-            <span className="old">
-              {currency.currencySymbol + product.price}
-            </span>
-          </Fragment>
-        ) : (
-          <span>{currency.currencySymbol + product.price} </span>
-        )}
-      </div>
-      {proRating && proRating > 0 ? (
+
+      {/* {proRating && proRating > 0 && (
         <div className="pro-details-rating-wrap">
           <div className="pro-details-rating">
             <Rating ratingValue={proRating} />
           </div>
         </div>
-      ) : (
-        ""
-      )}
+      )} */}
+
       <div className="pro-details-list">
         <p>{product.description}</p>
       </div>
 
-      {product.variation ? (
+      {product.variation && (
         <div className="pro-details-size-color">
           <div className="pro-details-color-wrap">
             <span>Color</span>
             <div className="pro-details-color-content">
-              {product.variation.map((single, key) => {
-                return (
-                  <label
-                    className={`pro-details-color-content--single ${single.color}`}
-                    key={key}
-                  >
-                    <input
-                      type="radio"
-                      value={single.color}
-                      name="product-color"
-                      checked={
-                        single.color === selectedProductColor ? "checked" : ""
-                      }
-                     
-                      onChange={() => {
-                        setSelectedProductColor(single.color);
-                        setSelectedProductSize(single.title);
-                        setProductStock(single.qty_in_stock);
-                        setQuantityCount(1);
-                      }}
-                    />
-                    <span className="checkmark"></span>
-                  </label>
-                );
-              })}
+              {product.variation.map((single, key) => (
+                <label className={`pro-details-color-content--single ${single.color}`} key={key}>
+                  <input
+                    type="radio"
+                    value={single.color}
+                    name="product-color"
+                    checked={single.color === selectedProductColor}
+                    onChange={() => {
+                      setSelectedProductColor(single.color);
+                      setSelectedProductSize(single.title);
+                      setProductStock(single.qty_in_stock);
+                      setQuantityCount(1);
+                    }}
+                  />
+                  <span className="checkmark"></span>
+                </label>
+              ))}
             </div>
           </div>
+
           <div className="pro-details-size">
             <span>Size</span>
             <div className="pro-details-size-content">
-              {product.variation &&
-                product.variation.map(single => {
-                  return single.color === selectedProductColor
-                    ? single.size.map((singleSize, key) => {
-                        return (
-                          <label
-                            className={`pro-details-size-content--single`}
-                            key={key}
-                          >
-                            <input
-                              type="radio"
-                              value={singleSize.name}
-                              checked={
-                                singleSize.name === selectedProductSize
-                                  ? "checked"
-                                  : ""
-                              }
-                              onChange={() => {
-                                setSelectedProductSize(singleSize.name);
-                                setProductStock(singleSize.stock);
-                                setQuantityCount(1);
-                              }}
-                            />
-                            <span className="size-name">{singleSize.name}</span>
-                          </label>
-                        );
-                      })
-                    : "";
-                })}
+              {product.variation.map(single =>
+                single.color === selectedProductColor
+                  ? single.size.map((singleSize, key) => (
+                      <label className="pro-details-size-content--single" key={key}>
+                        <input
+                          type="radio"
+                          value={singleSize.name}
+                          checked={singleSize.name === selectedProductSize}
+                          onChange={() => {
+                            setSelectedProductSize(singleSize.name);
+                            setProductStock(singleSize.stock);
+                            setQuantityCount(1);
+                          }}
+                        />
+                        <span className="size-name">{singleSize.name}</span>
+                      </label>
+                    ))
+                  : null
+              )}
             </div>
           </div>
         </div>
-      ) : (
-        ""
       )}
-      {product.affiliateLink ? (
-        <div className="pro-details-quality">
-          <div className="pro-details-cart btn-hover ml-0">
-            <a
-              href={product.affiliateLink}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Buy Now
-            </a>
-          </div>
-        </div>
-      ) : (
-        <div className="pro-details-quality">
-          <div className="cart-plus-minus">
+
+{product?.grades && 
+ Array.isArray(product.grades) && 
+ product.grades.filter(g => g !== null && g !== undefined && g !== 'null').length > 0 && (
+  <div className="p-4 bg-white rounded-lg">
+    <label htmlFor="grade-select" className="text-lg font-semibold text-gray-700">
+      Select Grade
+    </label>
+    <select
+      id="grade-select"
+      className="mt-2 w-full p-2 border rounded-lg text-gray-700 focus:ring-2 focus:ring-pink-500"
+      value={selectedProductGrade}
+      onChange={(e) => setSelectedProductGrade(e.target.value)}
+    >
+      <option value="">Select a grade</option>
+      {product.grades
+        .filter(grade => grade !== null && grade !== undefined && grade !== 'null')
+        .map((grade, index) => (
+          <option key={index} value={grade}>{grade}</option>
+        ))}
+    </select>
+  </div>
+)}
+
+      <div className="pro-details-quality">
+        <div className="pro-details-cart btn-hover">
+          {product && product.qty_in_stock > 0 ? (
             <button
-              onClick={() =>
-                setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)
-              }
-              className="dec qtybutton"
+              onClick={() => {
+                if (!validateBeforeCart()) return;
+
+                if (cartItem?.qty > 0) {
+                  product.qty = parseFloat(cartItem?.qty) + Number(quantityCount);
+                  product.basket_id = cartItem.basket_id;
+                  onUpdateCart(product);
+                } else {
+                  onAddToCart(product);
+                }
+              }}
+              disabled={productCartQty >= productStock}
             >
-              -
+              Add To Cart
             </button>
-            <input
-              className="cart-plus-minus-box"
-              type="text"
-              value={quantityCount}
-              readOnly
+          ) : (
+            <button disabled>Out of Stock</button>
+          )}
+        </div>
+
+        <div className="pro-details-wishlist">
+          <button
+            className={wishlistItem !== undefined ? "active" : ""}
+            disabled={wishlistItem !== undefined}
+            title={
+              wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+                ? "Added to wishlist"
+                : "Add to wishlist"
+            }
+            onClick={() => {
+              const isInWishlist = wishlistItems.find(wishlistItem => wishlistItem.product_id === product.product_id);
+              if (isInWishlist) {
+                dispatch(removeWishlistData(isInWishlist, addToast));
+              } else {
+                onAddToWishlist(product);
+              }
+            }}
+          >
+            <i
+              className={`fa ${
+                wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+                  ? "fa-heart"
+                  : "fa-heart-o"
+              }`}
+              style={{
+                color: wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+                  ? "#96dbfc"
+                  : "gray"
+              }}
             />
-            <button
-              onClick={() =>
-                setQuantityCount(
-                  quantityCount < Number(productStock) - Number(productCartQty || 0)
-                    ? quantityCount + 1
-                    : quantityCount
-                )
-              }
-              // onClick={() => {
-              //   console.log("Before increment:", quantityCount, "Stock:", productStock, "CartQty:", productCartQty);
-              //   setQuantityCount((prevQuantity) => {
-              //     console.log("Updated Quantity:", prevQuantity + 1);
-              //     return prevQuantity < Number(productStock) - Number(productCartQty) ? prevQuantity + 1 : prevQuantity;
-              //   });
-              // }}
-              
-              className="inc qtybutton"
-            >
-              +
-            </button>
-          </div>
-          <div className="pro-details-cart btn-hover">
-            {product && product.qty_in_stock > 0 ? (
-              <button
-              onClick={ () => { 
-                if(cartItem?.qty>0){
-                product.qty=parseFloat(cartItem?.qty) +Number( quantityCount);
-                product.basket_id=cartItem.basket_id;
-                onUpdateCart(product,addToast)
-              }else{
-                onAddToCart(product,
-                      addToast,
-                      quantityCount,
-                      selectedProductColor,
-                      selectedProductSize
-                  )}}}
-                disabled={productCartQty >= productStock}
-              >
-                {" "}
-                Add To Cart{" "}
-              </button>
-            ) : (
-              <button disabled>Out of Stock</button>
-            )}
-          </div>
-          <div className="pro-details-wishlist">
-            <button
-              className={wishlistItem !== undefined ? "active" : ""}
-              disabled={wishlistItem !== undefined}
-              title={
-                wishlistItem !== undefined
-                  ? "Added to wishlist"
-                  : "Add to wishlist"
-              }
-              onClick={() => onAddToWishlist(product, addToast)}
-            >
-              <i className="pe-7s-like" />
-            </button>
-          </div>
-          <div className="pro-details-compare">
-            <button
-              className={compareItem !== undefined ? "active" : ""}
-              disabled={compareItem !== undefined}
-              title={
-                compareItem !== undefined
-                  ? "Added to compare"
-                  : "Add to compare"
-              }
-              onClick={() => onAddToCompare(product, addToast)}
-            >
-              <i className="pe-7s-shuffle" />
-            </button>
-          </div>
+          </button>
         </div>
-      )}
-      {product.category ? (
+      </div>
+
+      {product.category && (
         <div className="pro-details-meta">
           <span>Categories :</span>
           <ul>
-            {product.category.map((single, key) => {
-              return (
-                <li key={key}>
-                  <Link to={process.env.PUBLIC_URL + "/shop"}>
-                    <Badge>{single}</Badge>
-                  </Link>
-                </li>
-              );
-            })}
+            {product.category.map((single, key) => (
+              <li key={key}>
+                <Link to="/shop">
+                  <Badge>{single}</Badge>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-      ) : (
-        ""
       )}
-      {product.tag ? (
+
+      {product.tag && (
         <div className="pro-details-meta">
           <span>Tags :</span>
           <ul>
-            {product.tag.filter(el=>{return el!== 'null'}).map((single, key) => {
-              return (
-                <li key={key}>
-                  <Link to={process.env.PUBLIC_URL + "/shop"}>
-                    <Badge>{single}</Badge>
-                  </Link>
-                </li>
-              );
-            })}
+            {product.tag.filter(el => el !== 'null').map((single, key) => (
+              <li key={key}>
+                <Link to="/shop">
+                  <Badge>{single}</Badge>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-      ) : (
-        ""
       )}
-
-     
     </div>
   );
 };
@@ -398,6 +325,8 @@ ProductDescriptionInfo.propTypes = {
   discountedPrice: PropTypes.number,
   finalDiscountedPrice: PropTypes.number,
   finalProductPrice: PropTypes.number,
+  finalDiscountedPriceRounded: PropTypes.number,
+  finalProductPriceRounded: PropTypes.number,
   product: PropTypes.object,
   wishlistItem: PropTypes.object,
   comments:PropTypes.array,

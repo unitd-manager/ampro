@@ -113,10 +113,10 @@ const Offers = ({}) => {
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | Offers Page</title>
+        <title>Ampro | Offers Page</title>
         <meta
           name="description"
-          content="Shop page of Pearl food eCommerce template."
+          content="Shop page of Ampro eCommerce template."
         />
       </MetaTags>
 

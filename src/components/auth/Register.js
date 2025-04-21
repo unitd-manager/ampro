@@ -7,11 +7,11 @@ function Register() {
   const history = useHistory();
   const { addToast } = useToasts();
   const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
+  const [mobileError, setMobileError] = useState("");
   const [signUpEmailError, setSignUpEmailError] = useState("");
   const [signupPasswordError, setSignupPasswordError] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [mobile, setMobile] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [RegisterEmail, setRegisterEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
@@ -50,11 +50,11 @@ function Register() {
     const firstNamePattern = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
     return firstNamePattern.test(first_name);
   };
-  const validateLastName = (last_name) => {
-    // name validation regex pattern
-    const lastNamePattern = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
-    return lastNamePattern.test(last_name);
-  };
+  const validateMobile = (mobile) => {
+    // Mobile number validation pattern (10-digit numbers)
+    const mobilePattern = /^[6-9]\d{9}$/;
+    return mobilePattern.test(mobile);
+  };  
 
   const validateEmail = (email) => {
     // Email validation regex pattern
@@ -70,38 +70,49 @@ function Register() {
   };
 
   const signup = (event) => {
-    {
       event.preventDefault();
       setFirstNameError("");
-      setLastNameError("");
+      setMobileError("");
       setSignUpEmailError("");
       setSignupPasswordError("");
 
+      let hasError = false;
+
       if (!validateFirstName(firstName)) {
-        setFirstNameError("Invalid First Name");
-      }
-      if (!validateLastName(lastName)) {
-        setLastNameError("Invalid Last Name");
+        setFirstNameError("Invalid Name");
+        hasError = true;
       }
 
+      if (!validateMobile(mobile)) {
+        setMobileError("Invalid Mobile Number");
+        hasError = true;
+      }
+      
       // Perform email and password validation
       if (!validateEmail(signupEmail)) {
         setSignUpEmailError("Invalid email");
+        hasError = true;
       }
 
       if (!validatePassword(signupPassword)) {
         setSignupPasswordError(
-          "Password must contain at least 8 characters, including one UpperCase letter,one LowerCase letter,special characer and one number"
+          "Password must contain at least 8 characters, including UpperCase, LowerCase,Special character & numbers."
         );
+        hasError = true;
+      }
+
+      if (hasError) {
+        return;
       }
 
       // If both email and password are valid, proceed with form submission
-      if (validateEmail(signupEmail) && validatePassword(signupPassword)) {
         signupData.name = signupData.first_name.concat(
           " ",
           signupData.last_name
         );
         signupData.otp_no = otp;
+        signupData.creation_date = new Date().toLocaleString();
+        signupData.date_of_creation = new Date().toLocaleString();
         api
           .post("/api/register", signupData)
           .then((res) => {
@@ -111,6 +122,7 @@ function Register() {
               appearance: "success",
               autoDismiss: true,
             });
+            sendMail();
             setTimeout(() => {
               // Pass the contact ID as state to the next page
               history.push({
@@ -129,8 +141,6 @@ function Register() {
               autoDismiss: true,
             });
           });
-      }
-    }
   };
   const sendMail = () => {
     {
@@ -198,35 +208,32 @@ function Register() {
     <div className="login-form-container">
       <div className="login-register-form">
         <form>
-          <input
+        {firstNameError && <span className="error">{firstNameError}</span>}
+        <input
             type="text"
             name="first_name"
-            placeholder="Firstname"
+            placeholder="Name"
             onChange={(e) => {
               handleSignupData(e);
               setFirstName(e.target.value);
             }}
           />
-          {firstNameError && <span className="error">{firstNameError}</span>}
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Lastname"
-            onChange={(e) => {
-              handleSignupData(e);
-              setLastName(e.target.value);
-            }}
-          />
-          {lastNameError && <span className="error">{lastNameError}</span>}
-          <input
-            type="mobile"
-            name="mobile"
-            placeholder="Mobile"
-            onChange={(e) => {
-              handleSignupData(e);
-              setSignupPassword(e.target.value);
-            }}
-          />
+        {mobileError && <span className="error">{mobileError}</span>}
+        <input
+          type="text"
+          name="mobile"
+          placeholder="Mobile"
+          value={mobile}
+          onChange={(e) => {
+            setMobile(e.target.value);  // Update mobile state
+            handleSignupData(e);        // Update signupData state
+          }}
+        />
+
+
+          {signUpEmailError && (
+            <span className="error">{signUpEmailError}</span>
+          )}
           <input
             name="email"
             placeholder="Email"
@@ -236,9 +243,9 @@ function Register() {
               setSignupEmail(e.target.value);
             }}
           />
-          {signUpEmailError && (
-            <span className="error">{signUpEmailError}</span>
-          )}
+          {signupPasswordError && (
+            <span className="error">{signupPasswordError}</span>
+          )} 
           <input
             type="password"
             name="password"
@@ -248,9 +255,6 @@ function Register() {
               setSignupPassword(e.target.value);
             }}
           />
-          {signupPasswordError && (
-            <span className="error">{signupPasswordError}</span>
-          )} 
           <input
            type="hidden"
           name="otp_no"
@@ -261,7 +265,7 @@ function Register() {
               type="submit"
               onClick={(event) => {
                 signup(event);
-                sendMail(event);
+                
               }}
             >
               <span>Register</span>

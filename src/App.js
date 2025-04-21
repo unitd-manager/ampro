@@ -12,6 +12,8 @@ import {
   emptyCartData
 } from "../src/redux/actions/cartItemActions";
 import { fetchWishlistData, emptyWishlistData } from "../src/redux/actions/wishlistItemActions";
+import { HashRouter } from "react-router-dom/cjs/react-router-dom.min";
+
 
 // home pages
 
@@ -70,6 +72,10 @@ const OrderSuccessPage = lazy(() => import("./pages/other/OrderSuccess"));
 const Orders = lazy(() => import("./pages/other/Orders"));
 const OrderDetails = lazy(() => import("./pages/other/OrderDetails"));
 const OrderFailurePage = lazy(() => import("./pages/other/OrderFailure"));
+const EnquiryHistory = lazy(() => import("./pages/other/Enquiries"));
+const EnquiryDetails = lazy(() => import("./pages/other/EnquiryDetails"));
+const EnquirySuccess = lazy(() => import("./pages/other/EnquirySuccess"));
+const ShippingAddress = lazy(() => import("./pages/other/ShippingAddress"));
 
 const Review = lazy(() => import("./pages/other/Review"));
 const NotFound = lazy(() => import("./pages/other/NotFound"));
@@ -111,9 +117,9 @@ const App = (props) => {
     }
   }, [user, dispatch]);
   return (
-    <ToastProvider placement="bottom-left">
+    <ToastProvider placement="top-right">
       <BreadcrumbsProvider>
-        <Router>
+        <HashRouter>
           <ScrollToTop>
             <Suspense
               fallback={
@@ -258,6 +264,22 @@ const App = (props) => {
                   component={Orders}
                 />
                 <Route
+                  path={process.env.PUBLIC_URL + "/enquiries"}
+                  component={EnquiryHistory}
+                />
+                 <Route
+                  path={process.env.PUBLIC_URL + "/enquirydetails/:id"}
+                  component={EnquiryDetails}
+                />
+                      <Route
+                  path={process.env.PUBLIC_URL + "/enquirysuccess"}
+                  component={EnquirySuccess}
+                />
+                <Route
+                  path={process.env.PUBLIC_URL + "/shippingaddress"}
+                  component={ShippingAddress}
+                />
+                <Route
                   path={process.env.PUBLIC_URL + "/orders/search/:keyword"}
                   component={Orders}
                 />
@@ -299,7 +321,7 @@ const App = (props) => {
               </Switch>
             </Suspense>
           </ScrollToTop>
-        </Router>
+        </HashRouter>
       </BreadcrumbsProvider>
     </ToastProvider>
   );

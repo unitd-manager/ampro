@@ -3,10 +3,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
-import ProductImageGallery from "../../components/product/ProductImageGallery";
+// import ProductImageGallery from "../../components/product/ProductImageGallery";
+import ProductImagesGallery from "../../components/product/ProductImagesGallery";
 import ProductDescriptionInfo from "../../components/product/ProductDescriptionInfo";
-import ProductImageGallerySideThumb from "../../components/product/ProductImageGallerySideThumbnew";
-import ProductImageFixed from "../../components/product/ProductImageFixed";
 
 const ProductImageDescription = ({
   spaceTopClass,
@@ -45,19 +44,9 @@ const ProductImageDescription = ({
       <div className="container">
         <div className="row">
           <div className="col-lg-6 col-md-6">
-            {/* product image gallery */}
-            {galleryType === "leftThumb" ? (
-              <ProductImageGallerySideThumb
-                product={product}
-                thumbPosition="left"
-              />
-            ) : galleryType === "rightThumb" ? (
-              <ProductImageGallerySideThumb product={product} />
-            ) : galleryType === "fixedImage" ? (
-              <ProductImageFixed product={product} />
-            ) : (
-              <ProductImageGallery product={product} />
-            )}
+        
+              {product.images && <ProductImagesGallery product={product} productImages={product?.images} />}
+           
             
           </div>
           <div className="col-lg-6 col-md-6">

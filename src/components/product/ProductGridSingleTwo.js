@@ -1,12 +1,15 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import { Badge } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import imageBase from "../../constants/imageBase";
 import { useReducer } from "react";
+import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ProductGridSingleTwo = ({
   product,
@@ -31,13 +34,19 @@ const ProductGridSingleTwo = ({
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
 const[loginModal , setLoginModal]=useState(false);
+const history = useHistory();
+const dispatch=useDispatch();
 
+const handleCardClick = () => {
+  history.push(`/product/${product.product_id}/${formattedTitle}`);
+};
+const wishlistItems=useSelector(state=>state.wishlistItems.wishlistItems);
   const discountedPrice = getDiscountPrice(product.price, product.discount_amount);
   // const finalProductPrice = +(product.price * currency.currencyRate).toFixed(2);
     const finalProductPrice = +(product.price);
   const finalDiscountedPrice = +(
     discountedPrice);
-  
+    console.log('wishlistItems',wishlistItems);
   product.images= String(product.images).split(',')
 console.log('file',product)
 console.log('images',product.images)
@@ -51,10 +60,12 @@ console.log('cartItem',cartItem);
           sliderClassName ? sliderClassName : ""
         }`}
       >
+          
         <div
           className={`product-wrap-2 ${
             spaceBottomClass ? spaceBottomClass : ""
-          } ${colorClass ? colorClass : ""} `}
+          } ${colorClass ? colorClass : ""} `} 
+          onClick={handleCardClick}
         >
           <div className="product-img">
             <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
@@ -107,14 +118,15 @@ console.log('cartItem',cartItem);
                 </a>
               ) : product.variation && product.variation.length >= 1 ? (
                 <Link
-                  to={`${process.env.PUBLIC_URL}/product/${product.product_id}/${formattedTitle}`}
+                to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}
                   title="Select options"
                 >
                   <i className="fa fa-cog"></i>
                 </Link>
               ) : product.qty_in_stock && product.qty_in_stock > 0 ? (
                 <button
-                  onClick={ () => { 
+                  onClick={ (e) => { 
+                    e.stopPropagation(); // Prevent card click
                     if(cartItem?.qty>0){
                     product.qty=parseFloat(cartItem?.qty) +Number(1);
                     product.basket_id=cartItem.basket_id;
@@ -145,7 +157,9 @@ console.log('cartItem',cartItem);
                 </button>
               )}
 
-              <button onClick={() => setModalShow(true)} title="Quick View">
+              <button onClick={(e) => {
+                e.stopPropagation(); // Prevent card click
+                setModalShow(true);}} title="Quick View">
                 <i className="fa fa-eye"></i>
               </button>
      
@@ -173,39 +187,46 @@ console.log('cartItem',cartItem);
                 <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
                   <span className="product-name">{product.title}</span>
                 </Link>
-              </h3>
-           
-              <div className="price-2">
-                {discountedPrice !== null&&discountedPrice !== '' ? (
-                  <Fragment>
-                    <span>
-                      {currency.currencySymbol + finalDiscountedPrice}
-                    </span>{" "}
-                    <span className="old">
-                     ({currency.currencySymbol + finalProductPrice})
-                    </span>
-                  </Fragment>
-                ) : (
-                  <span>{currency.currencySymbol + finalProductPrice} </span>
-                )}
-              </div>
+              </h3>           
             </div>
             <div className="pro-wishlist-2">
-              <button
-                className={wishlistItem !== undefined ? "active" : ""}
-                disabled={wishlistItem !== undefined}
-                title={
-                  wishlistItem !== undefined
-                    ? "Added to wishlist"
-                    : "Add to wishlist"
-                }
-                onClick={() =>{ onAddToWishlist(product,addToast)}}
-              >
-                <i className="fa fa-heart-o" />
-              </button>
+            <button
+  className={wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id) ? "active" : ""}
+  title={
+    wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+      ? "Added to wishlist"
+      : "Add to wishlist"
+  }
+  onClick={(e) => {
+    e.stopPropagation(); // Prevent card click
+    const isInWishlist = wishlistItems.find(
+      wishlistItem => wishlistItem.product_id === product.product_id
+    );
+    if (isInWishlist) {
+      dispatch(removeWishlistData(isInWishlist, addToast));
+    } else {
+      onAddToWishlist(product);
+    }
+  }}
+>
+  <i
+    className={`fa ${
+      wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+        ? "fa-heart"
+        : "fa-heart-o"
+    }`}
+    style={{
+      color: wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+        ? "#96dbfc"
+        : "gray"
+    }}
+  />
+</button>
+
             </div>
           </div>
         </div>
+        
       </div>
       {/* product modal */}
       <ProductModal

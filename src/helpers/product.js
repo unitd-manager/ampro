@@ -156,107 +156,74 @@ export const getProductCartQuantity = (cartItems, product, color, size) => {
 //   return products;
 // };
 
-
-
-export const getSortedProducts = (products, sortType, sortValue) => {
+export const getSortedProducts = async (products, sortType, sortValue,sortarray) => {
   if (sortType && sortValue) {
-    if (sortType === "category") {
-      // return products.filter(
-      //   product => product.category.filter(single => single === sortValue)[0]
-      // );
-     const getvalues=async()=>{
+    console.log('Selected filter:', sortType, sortValue);
 
-     
-     const sorted= await api.post('/category/getProductByCategory',{category_id:sortValue})
-   
-     .then((res)=>{
-      console.log(res.data.data)
-        return res.data.data
-        
-      }).then((result)=>{
-        console.log(result)
-          return result
-          
-        }).catch((err)=>{
-        console.log(err)
-      })
-   
-        return sorted
+    try {
+      if (sortType === "category" && sortValue !== '') {
+        const response = await api.post('/category/getProductByCategory', { category_id: sortValue });
+        return response.data.data;
+      }
+
+      if (sortType === "subcategory" && sortValue !== '' && sortarray.length>0) {
+        const response = await api.post('/category/getProductBySubcategory', { sub_category_ids: sortarray });
+        return response.data.data;
+      }
+
+      if (sortType === "subcategorytype" && sortValue !== '' && sortarray.length>0) {
+        const response = await api.post('/category/getProductBySubCategoryType', { sub_category_type_ids: sortarray });
+        return response.data.data;
+      }
+
+      if (sortType === "tag") {
+        return products.filter(product =>
+          product.tag.some(single => single === sortValue)
+        );
+      }
+
+      if (sortType === "color") {
+        return products.filter(product =>
+          product.variation &&
+          product.variation.some(single => single.color === sortValue)
+        );
+      }
+
+      if (sortType === "size") {
+        return products.filter(product =>
+          product.variation &&
+          product.variation.some(single =>
+            single.size.some(size => size.name === sortValue)
+          )
+        );
+      }
+
+      if (sortType === "filterSort") {
+        let sortedProducts = [...products];
+        if (sortValue === "priceHighToLow") {
+          return sortedProducts.sort((a, b) => b.price - a.price);
+        }
+        if (sortValue === "priceLowToHigh") {
+          return sortedProducts.sort((a, b) => a.price - b.price);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
     }
-    const pro=getvalues();
-    return pro
-    }
+  } 
+  else if (sortType && !sortValue) {
     if (sortType === "tag") {
-      if(sortValue===''){
-
-      }
-      return products.filter(
-        product => product.tag.filter(single => single === sortValue)[0]
-      );
-    }
-    if (sortType === "color") {
-      return products.filter(
-        product =>
-          product.variation &&
-          product.variation.filter(single => single.color === sortValue)[0]
-      );
-    }
-    if (sortType === "size") {
-      return products.filter(
-        product =>
-          product.variation &&
-          product.variation.filter(
-            single => single.size.filter(single => single.name === sortValue)[0]
-          )[0]
-      );
-    }
-    if (sortType === "filterSort") {
-      let sortProducts = [...products];
-      if (sortValue === "default") {
-        return sortProducts;
-      }
-      if (sortValue === "priceHighToLow") {
-        return sortProducts.sort((a, b) => {
-          return b.price - a.price;
-        });
-      }
-      if (sortValue === "priceLowToHigh") {
-        return sortProducts.sort((a, b) => {
-          return a.price - b.price;
-        });
+      try {
+        const response = await api.get('/product/getAllProducts');
+        return response.data.data;
+      } catch (error) {
+        console.error("Error fetching all products:", error);
+        return [];
       }
     }
   }
-  else if(sortType && !sortValue){
-    if (sortType === "tag") {
-      if(sortValue==='' || !sortValue){
-        const getvalues=async()=>{
 
-     
-          const sorted= await api.get('/product/getAllProducts')
-        
-          .then((res)=>{
-           console.log(res.data.data)
-             return res.data.data
-             
-           }).then((result)=>{
-             console.log(result)
-               return result
-               
-             }).catch((err)=>{
-             console.log(err)
-           })
-        
-             return sorted
-         }
-         const pro=getvalues();
-         return pro
-      }
-      return products.filter(
-        product => product.tag.filter(single => single === sortValue)[0]
-      );
-    }
-  }
   return products;
 };
 

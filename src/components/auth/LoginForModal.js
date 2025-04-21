@@ -49,7 +49,7 @@ function LoginForModal({loginModal,setLoginModal}) {
     
         if (!validatePassword(password)) {
           setPasswordError(
-            "Password must contain at least 8 characters, including one UpperCase letter,one LowerCase letter,special characer and one number"
+            "Password must contain at least 8 characters, including UpperCase, LowerCase,Special character & numbers."
           );
         }
     

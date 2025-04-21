@@ -164,22 +164,7 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
                   <span className="product-name">{product.title}</span>
                 </Link>
-              </h3>
-           
-              <div className="price-2">
-                {discountedPrice !== null&&discountedPrice !== '' ? (
-                  <Fragment>
-                    <span>
-                      {currency.currencySymbol + finalDiscountedPrice}
-                    </span>{" "}
-                    <span className="old">
-                     ({currency.currencySymbol + finalProductPrice})
-                    </span>
-                  </Fragment>
-                ) : (
-                  <span>{currency.currencySymbol + finalProductPrice} </span>
-                )}
-              </div>
+              </h3>           
             </div>
             <div className="pro-wishlist-2">
               <button

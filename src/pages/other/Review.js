@@ -39,20 +39,20 @@ function Review() {
         appearance: "success",
         autoDismiss: true,
       });
-      // setTimeout(() => {
-      //   // window.location.reload();
-      // }, 400);
+      setTimeout(() => {
+        // window.location.reload();
+      }, 400);
     });
   };
 
   return (
-    <LayoutOne headerTop="visible">
+    
       <div className="container">
         <div className="ratting-form-wrapper pl-50" style={{ padding: "20px" }}>
           <h3>Add a Review</h3>
           <div className="ratting-form">
             <form action="#">
-              <div className="star-box">
+              {/* <div className="star-box">
                 <span>Your rating:</span>
                 <div className="ratting-star">
                   <i className="fa fa-star" />
@@ -61,7 +61,7 @@ function Review() {
                   <i className="fa fa-star" />
                   <i className="fa fa-star" />
                 </div>
-              </div>
+              </div> */}
               <StarRating
                 rating={rating}
                 setRating={setRating}
@@ -90,7 +90,7 @@ function Review() {
           </div>
         </div>
       </div>
-    </LayoutOne>
+  
   );
 }
 

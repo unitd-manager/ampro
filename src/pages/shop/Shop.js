@@ -17,6 +17,8 @@ const Shop = ({}) => {
   const [layout, setLayout] = useState('grid three-column');
   const [sortType, setSortType] = useState("");
   const [sortValue, setSortValue] = useState("");
+  const [sortarray, setSortArray] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState();
   const [filterSortType, setFilterSortType] = useState("");
   const [filterSortValue, setFilterSortValue] = useState("");
   const [offset, setOffset] = useState(0);
@@ -33,12 +35,11 @@ const Shop = ({}) => {
   const history = useHistory();
 
   console.log("search", searchQuery);
-
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(location.search);
     const query = urlSearchParams.get("search");
     const cate = urlSearchParams.get("category");
-
+  
     if (query) {
       setSearchQuery(query);
       api
@@ -50,7 +51,9 @@ const Shop = ({}) => {
           console.log(err);
         });
     } else if (cate) {
-      getSortParams("category", cate);
+      // If category exists, set it as selected category
+      setSelectedCategories(cate); // <-- this line adds category to selectedCategories
+      getSortParams("category", cate); // Pass to getSortParams as well
     } else {
       api
         .get("/product/getAllProducts")
@@ -67,6 +70,7 @@ const Shop = ({}) => {
     }
     console.log("searchquery", query);
   }, [location]);
+  
 
   const pageLimit = 15;
   const { pathname } = location;
@@ -75,33 +79,38 @@ const Shop = ({}) => {
     setLayout(layout);
   };
 
-  const getSortParams = (sortType, sortValue) => {
+  const getSortParams = (sortType, sortValue,sortarray) => {
+    console.log('selectedCategories getparams');
     setSortType(sortType);
     setSortValue(sortValue);
+    setSelectedCategories(sortValue);
+    setSortArray(sortarray);
     console.log("sortType", sortType);
     console.log("sortvalue", sortValue);
   };
+  
 
   const getFilterSortParams = (sortType, sortValue) => {
     setFilterSortType(sortType);
     setFilterSortValue(sortValue);
   };
-
+console.log('selectedCategories',selectedCategories);
   useEffect(() => {
     const filter = async () => {
-      let sortedProducts = getSortedProducts(products, sortType, sortValue);
+      let sortedProducts = getSortedProducts(products, sortType, sortValue,sortarray);
       const filterSortedProducts = await getSortedProducts(
         sortedProducts,
         filterSortType,
-        filterSortValue
+        filterSortValue,sortarray
       );
+      console.log("sortedpros", sortedProducts);
       sortedProducts = filterSortedProducts;
       console.log("sorted", sortedProducts);
       setSortedProducts(sortedProducts);
-      setCurrentData(sortedProducts.slice(offset, offset + pageLimit));
+      setCurrentData(sortedProducts?.slice(offset, offset + pageLimit));
     };
     filter();
-  }, [offset, products, sortType, sortValue, filterSortType, filterSortValue]);
+  }, [offset, products, sortType, sortValue, selectedCategories,filterSortType, filterSortValue]);
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
@@ -115,10 +124,10 @@ const Shop = ({}) => {
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | Shop Page</title>
+        <title>Ampro | Shop Page</title>
         <meta
           name="description"
-          content="Shop page of Pearl react minimalist eCommerce template."
+          content="Shop page of Ampro react minimalist eCommerce template."
         />
       </MetaTags>
 
@@ -134,9 +143,11 @@ const Shop = ({}) => {
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <div className="row">
-              <div className="col-lg-3 order-2 order-lg-1">
+              <div className="col-lg-3 order-1 order-lg-1">
                 {/* shop sidebar */}
                 <ShopSidebar
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
                   products={allProducts}
                   getSortParams={getSortParams}
                   handleSearchSubmit={handleSearchSubmit}
@@ -144,13 +155,13 @@ const Shop = ({}) => {
                   sideSpaceClass="mr-30"
                 />
               </div>
-              <div className="col-lg-9 order-1 order-lg-2">
+              <div className="col-lg-9 order-2 order-lg-2">
                 {/* shop topbar default */}
                 <ShopTopbar
                   getLayout={getLayout}
                   getFilterSortParams={getFilterSortParams}
-                  productCount={products.length}
-                  sortedProductCount={currentData.length}
+                  productCount={products?.length}
+                  sortedProductCount={currentData?.length}
                 />
                 {/* shop page content default */}
                 <ShopProducts layout={layout} products={currentData} />
@@ -158,7 +169,7 @@ const Shop = ({}) => {
                 {/* shop product pagination */}
                 <div className="pro-pagination-style text-center mt-30">
                   <Paginator
-                    totalRecords={sortedProducts.length}
+                    totalRecords={sortedProducts?.length}
                     pageLimit={pageLimit}
                     pageNeighbours={2}
                     setOffset={setOffset}

@@ -310,3 +310,55 @@
   background-color: #333;
   color: #fff;
 }
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-left: 25px;
+
+  input {
+    opacity: 0;
+    position: absolute;
+  }
+
+  .checkmark {
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border: 2px solid #1fb0c1;
+    border-radius: 3px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.2s ease-in-out;
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 5px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  input:checked + .checkmark {
+    background-color: #1fb0c1;
+    border-color: #1fb0c1;
+
+    &::after {
+      display: block;
+    }
+  }
+}

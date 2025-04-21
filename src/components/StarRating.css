@@ -1,0 +1,50 @@
+.stars {
+    display: flex;
+    gap: 8px; /* Space between stars */
+  }
+  
+  .star-wrapper {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+    line-height: 32px;
+  }
+  
+  .star {
+    color: #ccc; /* Default empty color */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* So clicks only happen on halves */
+  }
+  
+  .star.filled {
+    color: gold; /* Fully filled star */
+  }
+  
+  .star.half-filled {
+    background: linear-gradient(to right, gold 50%, #ccc 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .half {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+  }
+  
+  .left {
+    left: 0;
+  }
+  
+  .right {
+    right: 0;
+  }
+  

@@ -12,7 +12,7 @@ function OrderFailure({location}) {
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | Order Fails</title>
+        <title>Ampro | Order Fails</title>
         <meta
           name="description"
           content="404 page of UnitdEcom react minimalist eCommerce template."

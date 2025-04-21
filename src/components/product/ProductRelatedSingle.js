@@ -6,15 +6,21 @@ import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import imageBase from "../../constants/imageBase";
 import { Badge } from "reactstrap";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductRelatedSingle = ({
   product,
   currency,
-  addToCart,
-  addToWishlist,
+  onAddToCart,
+  onAddToWishlist,
+  onUpdateCart,
   addToCompare,
-  cartItem,
+  //cartItem,
   wishlistItem,
+  cartItems,
+  wishlistItems,
   compareItem,
   sliderClassName,
   spaceBottomClass,
@@ -23,14 +29,22 @@ const ProductRelatedSingle = ({
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
+  const dispatch=useDispatch();
 
+const history=useHistory();
   const discountedPrice = getDiscountPrice(product.price, product.discount);
   const finalProductPrice = +(product.price);
   const finalDiscountedPrice = +(
     discountedPrice
   );
+  
+  const cartItem=cartItems.filter((cartItem) => cartItem.product_id === product.product_id)[0]
+console.log('cartItems',cartItems);
   product.images= String(product.images).split(',')
   const formattedTitle = product.title.replace(/\s+/g, '-');
+  const handleCardClick = () => {
+    history.push(`/product/${product.product_id}/${formattedTitle}`);
+  };
   return (
     <Fragment>
       <div
@@ -42,6 +56,7 @@ const ProductRelatedSingle = ({
           className={`product-wrap-2 ${
             spaceBottomClass ? spaceBottomClass : ""
           } ${colorClass ? colorClass : ""} `}
+          onClick={handleCardClick}
         >
           <div className="product-img">
           <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
@@ -69,9 +84,6 @@ const ProductRelatedSingle = ({
                 ) : (
                   ""
                 )}
-                {product.latest ? <span className="purple" ><Badge style={{position:'relative',top:'2px',right:'5px'}}>New</Badge></span> : ""}
-                {product.top_seller ? <span className="purple" ><Badge style={{position:'relative',top:'5px',right:'2px'}}>Best Seller</Badge></span> : ""}
-                {product.most_popular ? <span className="purple"><Badge style={{position:'relative',top:'5px',right:'2px'}}>Most Popular</Badge></span> : ""}
               </div>
             ) : (
               ""
@@ -97,13 +109,20 @@ const ProductRelatedSingle = ({
                 </Link>
               ) : product.qty_in_stock && product.qty_in_stock > 0 ? (
                 <button
-                  onClick={() => addToCart(product, addToast)}
+                onClick={ (e) => { 
+                  e.stopPropagation(); // Prevent card click
+                  if(cartItem?.qty>0){
+                  product.qty=parseFloat(cartItem?.qty) +Number(1);
+                  product.basket_id=cartItem.basket_id;
+                  onUpdateCart(product,addToast)
+                }else{
+                  onAddToCart(product, addToast)}}}
                   className={
                     cartItem !== undefined && cartItem.quantity > 0
                       ? "active"
                       : ""
                   }
-                  disabled={cartItem !== undefined && cartItem.quantity > 0}
+                  // disabled={cartItem !== undefined && cartItem.quantity > 0}
                   title={
                     cartItem !== undefined ? "Added to cart" : "Add to cart"
                   }
@@ -117,22 +136,12 @@ const ProductRelatedSingle = ({
                 </button>
               )}
 
-              <button onClick={() => setModalShow(true)} title="Quick View">
+              <button onClick={(e) =>{ e.stopPropagation(); 
+               setModalShow(true);}} title="Quick View">
                 <i className="fa fa-eye"></i>
               </button>
 
-              <button
-                className={compareItem !== undefined ? "active" : ""}
-                disabled={compareItem !== undefined}
-                title={
-                  compareItem !== undefined
-                    ? "Added to compare"
-                    : "Add to compare"
-                }
-                onClick={() => addToCompare(product, addToast)}
-              >
-                <i className="fa fa-retweet"></i>
-              </button>
+             
             </div>
           </div>
           <div className="product-content-2">
@@ -146,34 +155,46 @@ const ProductRelatedSingle = ({
                   <span className="product-name">{product.title}</span>
                 </Link>
               </h3>
-              <div className="price-2">
-                {discountedPrice !== null ? (
-                  <Fragment>
-                    <span>
-                      {currency.currencySymbol + finalDiscountedPrice}
-                    </span>{" "}
-                    <span className="old">
-                      {currency.currencySymbol + finalProductPrice}
-                    </span>
-                  </Fragment>
-                ) : (
-                  <span>{currency.currencySymbol + finalProductPrice} </span>
-                )}
-              </div>
             </div>
             <div className="pro-wishlist-2">
-              <button
-                className={wishlistItem !== undefined ? "active" : ""}
-                disabled={wishlistItem !== undefined}
-                title={
-                  wishlistItem !== undefined
-                    ? "Added to wishlist"
-                    : "Add to wishlist"
-                }
-                onClick={() => addToWishlist(product, addToast)}
-              >
-                <i className="fa fa-heart-o" />
-              </button>
+               <button
+                              className={wishlistItem !== undefined ? "active" : ""}
+                              disabled={wishlistItem !== undefined}
+                              title={
+                                wishlistItems.filter(
+                                  wishlistItem => wishlistItem.product_id === product.product_id
+                                )[0]
+                                  ? "Added to wishlist"
+                                  : "Add to wishlist"
+                              }
+                              // onClick={() =>{ onAddToWishlist(product,addToast)}}
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent card click
+                                const isInWishlist = wishlistItems.filter(
+                                  wishlistItem => wishlistItem.product_id === product.product_id
+                                )[0];
+                                console.log('wishlistitem',isInWishlist);
+                                if(isInWishlist) {
+                                  dispatch(removeWishlistData(isInWishlist,addToast));
+                                  
+                                } else {
+                                  onAddToWishlist(product);
+                                }
+                              }} 
+                            >
+                              <i
+    className={`fa ${
+      wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+        ? "fa-heart"
+        : "fa-heart-o"
+    }`}
+    style={{
+      color: wishlistItems.some(wishlistItem => wishlistItem.product_id === product.product_id)
+        ? "#96dbfc"
+        : "gray"
+    }}
+  />
+                            </button>
             </div>
           </div>
         </div>
@@ -190,8 +211,8 @@ const ProductRelatedSingle = ({
         cartitem={cartItem}
         wishlistitem={wishlistItem}
         compareitem={compareItem}
-        addtocart={addToCart}
-        addtowishlist={addToWishlist}
+        addtocart={onAddToCart}
+        addtowishlist={onAddToWishlist}
         addtocompare={addToCompare}
         addtoast={addToast}
       />
@@ -204,6 +225,7 @@ ProductRelatedSingle.propTypes = {
   addToCompare: PropTypes.func,
   addToWishlist: PropTypes.func,
   cartItem: PropTypes.object,
+  cartItems: PropTypes.array,
   compareItem: PropTypes.object,
   currency: PropTypes.object,
   product: PropTypes.object,

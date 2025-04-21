@@ -38,23 +38,27 @@ export const fetchCartData = (userInfo) => {
         .catch((error) => {dispatch(fetchDataFailure(error))});
     };
   };
-  
-  export const insertCartData = (data,addToast) => {
-    
+  export const insertCartData = (data, addToast) => {
     return (dispatch) => {
       dispatch(insertCartDataRequest(data));
   
-      // Make the API call
-      api.post('/contact/addToCart',data)
-        .then(() =>{ dispatch(insertCartDataSuccess(data));
+      // ✅ Return the API promise so `.then` can work
+      return api.post('/contact/addToCart', data)
+        .then((res) => {
+          dispatch(insertCartDataSuccess(data));
           addToast("Item Added to cart", {
             appearance: "success",
             autoDismiss: true,
-           })})
-        .catch((error) => dispatch(insertCartDataFailure(error)));
+          });
+          return res; // Return the response for further chaining if needed
+        })
+        .catch((error) => {
+          dispatch(insertCartDataFailure(error));
+          throw error; // Throw error for handling in component
+        });
     };
   };
-
+  
   export const emptyCartData = () => {
     return (dispatch) => {
       dispatch(emptyCartDataRequest());

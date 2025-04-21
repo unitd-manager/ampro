@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useEffect } from "react";
 import MetaTags from "react-meta-tags";
 import { Link, useHistory } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
@@ -14,6 +14,7 @@ const ForgotPassword = ({ location }) => {
   const { pathname } = location;
 
   const [email, setEmail] = useState("");
+  const [contactMails, setContactMails] = useState([]);
 
   const { addToast } = useToasts();
   const history = useHistory();
@@ -24,22 +25,43 @@ const ForgotPassword = ({ location }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    if (!email) {
+      addToast("Please enter your email.", { appearance: "error" });
+      return;
+    }
+  
+    // Extract email values from contactMails
+    const emailList = contactMails.map((contact) => contact.email);
+  
+    if (!emailList.includes(email)) {
+      addToast("This email is not registered.", { appearance: "error" });
+      return;
+    }
     api
       .post("api/forgot", { email: email })
       .then((res) => {
-        res.json({});
+        addToast("A Link to reset password is sent to the mail.", { appearance: "success" });
       })
       .catch(() => {
         console.log("error");
       });
   };
+useEffect(()=>{
 
+  api
+  .get("api/getAllContactMails")
+  .then((res) => {
+    setContactMails(res.data.data)
+  })
+  .catch(() => {
+    console.log("error");
+  });
+},[])
   const signin = (event) => {};
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | ForgotPassword</title>
+        <title>Ampro | ForgotPassword</title>
         <meta
           name="description"
           content="Compare page of UnitdEcom react minimalist eCommerce template."
@@ -55,7 +77,7 @@ const ForgotPassword = ({ location }) => {
         <div className="login-register-area pt-100 pb-100">
           <div className="container">
             <div className="row">
-              <div className="col-lg-7 col-md-12 ml-auto mr-auto">
+              <div className="col-lg-6 col-md-12 ml-auto mr-auto">
                 <div className="login-register-wrapper">
                   <Tab.Container defaultActiveKey="login">
                     <Nav variant="pills" className="login-register-tab-list">

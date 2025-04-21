@@ -22,8 +22,8 @@ const MobileNavMenu = ({ strings, categories }) => {
           </li>
 
           <li className="menu-item-has-children">
-            <Link to={process.env.PUBLIC_URL + "/offers"}>
-              <span>Offers</span>
+            <Link to={process.env.PUBLIC_URL + "/about"}>
+              <span>About Us</span>
             </Link>
           </li>
 
@@ -35,7 +35,7 @@ const MobileNavMenu = ({ strings, categories }) => {
 
           <li className="menu-item-has-children">
           <Link to={process.env.PUBLIC_URL + "/shop"}>
-          <span>Categories</span></Link>
+          <span>Collection</span></Link>
           <ul className="sub-menu">
               {categories && categories.length > 0 ? (
                   categories.map((el) => (

@@ -5,15 +5,16 @@ import { v4 as uuid } from "uuid";
 // import { getProductCartQuantity } from "../../helpers/product";
 import { Modal } from "react-bootstrap";
 import Rating from "./sub-components/ProductRating";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist } from "../../redux/actions/wishlistActions";
 import { addToCompare } from "../../redux/actions/compareActions";
 import imageBase from "../../constants/imageBase";
 import LoginModal from "../LoginModal";
 import { insertCartData, updateCartData } from "../../redux/actions/cartItemActions";
-import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
+import { insertWishlistData, removeWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
+import ProductImagesGallery from "./ProductImagesGallery";
 
 const ProductModal = ({
   product,
@@ -65,6 +66,11 @@ const ProductModal = ({
   const [quantityCount, setQuantityCount] = useState(1);
   const [sessionId, setSessionId] = useState("");
 console.log('modalcartitem',cartItem)
+
+const dispatch=useDispatch();
+
+
+const wishlistItems=useSelector(state=>state.wishlistItems.wishlistItems);
   // const productCartQty = getProductCartQuantity(
   //   cartItems,
   //   product,
@@ -185,62 +191,15 @@ console.log('modalcartitem',cartItem)
         <div className="modal-body">
           <div className="row">
             <div className="col-md-5 col-sm-12 col-xs-12">
+           
               <div className="product-large-image-wrapper">
-                <Swiper {...gallerySwiperParams}>
-                  {product.images &&
-                    product.images.map((single, index) => {
-                      return (
-                        <div key={index}>
-                          <div className="single-image">
-                            <img
-                              src={`${imageBase}${single}`}
-                              className="img-fluid"
-                              alt=""
-                              style={{ maxWidth: "500px", maxHeight: "500px" }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </Swiper>
+              {product.images &&<ProductImagesGallery product={product} productImages={product?.images} />}
               </div>
-              <div className="product-small-image-wrapper mt-15">
-                <Swiper {...thumbnailSwiperParams}>
-                  {product.images &&
-                    product.images.map((single, index) => {
-                      return (
-                        <div key={index}>
-                          <div className="single-image">
-                            <img
-                              src={`${imageBase}${single}`}
-                              className="img-fluid"
-                              alt=""
-                              style={{ width: "70px", height: "70px" }}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                </Swiper>
-              </div>
+            
             </div>
             <div className="col-md-7 col-sm-12 col-xs-12">
               <div className="product-details-content quickview-content">
                 <h2>{product.title}</h2>
-                <div className="product-details-price">
-                  {discountedprice !== null ? (
-                    <Fragment>
-                      <span>
-                        {currency.currencySymbol + finaldiscountedprice}
-                      </span>{" "}
-                      <span className="old">
-                        {currency.currencySymbol + finalproductprice}
-                      </span>
-                    </Fragment>
-                  ) : (
-                    <span>{currency.currencySymbol + finalproductprice} </span>
-                  )}
-                </div>
                 {product.rating && product.rating > 0 ? (
                   <div className="pro-details-rating-wrap">
                     <div className="pro-details-rating">
@@ -412,11 +371,24 @@ console.log('modalcartitem',cartItem)
                         className={wishlistItem !== undefined ? "active" : ""}
                         disabled={wishlistItem !== undefined}
                         title={
-                          wishlistItem !== undefined
+                          wishlistItems.filter(
+                            wishlistItem => wishlistItem.product_id === product.product_id
+                          )[0]
                             ? "Added to wishlist"
                             : "Add to wishlist"
                         }
-                        onClick={() => onAddToWishlist(product, addToast)}
+                        onClick={() => {
+                                                         const isInWishlist = wishlistItems.filter(
+                                                           wishlistItem => wishlistItem.product_id === product.product_id
+                                                         )[0];
+                                                         console.log('wishlistitem',isInWishlist);
+                                                         if(isInWishlist) {
+                                                           dispatch(removeWishlistData(isInWishlist,addToast));
+                                                           
+                                                         } else {
+                                                           onAddToWishlist(product);
+                                                         }
+                                                       }} 
                       >
                         <i className="pe-7s-like" />
                       </button>

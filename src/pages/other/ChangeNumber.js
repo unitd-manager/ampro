@@ -39,7 +39,7 @@ const ForgotPassword = ({ location }) => {
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | ForgotPassword</title>
+        <title>Ampro | ForgotPassword</title>
         <meta
           name="description"
           content="Compare page of UnitdEcom react minimalist eCommerce template."
@@ -55,7 +55,7 @@ const ForgotPassword = ({ location }) => {
         <div className="login-register-area pt-100 pb-100">
           <div className="container">
             <div className="row">
-              <div className="col-lg-7 col-md-12 ml-auto mr-auto">
+              <div className="col-lg-6 col-md-12 ml-auto mr-auto">
                 <div className="login-register-wrapper">
                   <Tab.Container defaultActiveKey="login">
                  

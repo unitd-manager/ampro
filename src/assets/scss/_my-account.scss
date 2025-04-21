@@ -3,6 +3,10 @@
 .single-my-account {
   margin-bottom: 20px;
   border: 1px solid #ebebeb;
+  width: 100%;
+  .error{
+    color: red;
+  }
   .panel-heading {
     padding: 0;
     & > button {

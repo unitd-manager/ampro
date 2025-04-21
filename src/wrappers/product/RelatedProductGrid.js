@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Fragment,useState,useEffect } from "react";
 import { useToasts } from "react-toast-notifications";
-import { connect } from "react-redux";
-import { insertCartData } from "../../redux/actions/cartItemActions";
+import { connect, useDispatch } from "react-redux";
+import { fetchCartData, insertCartData, updateCartData } from "../../redux/actions/cartItemActions";
 import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist } from "../../redux/actions/wishlistActions";
@@ -24,33 +24,62 @@ const RelatedProductGrid = ({
   spaceBottomClass,
   colorClass,
   titlePriceClass,
-  insertCartData,
   insertWishlistData,
   insertCompareData
   // addToast
 }) => {
   const [user, setUser] = useState();
 const {addToast}=useToasts();
-  const onAddToCart = (data) => {
-    if(user){
-  
+const dispatch=useDispatch();
+const[loginModal,setLoginModal]=useState(false);
+
+  const onUpdateCart = (data) => {
+    // if (avaiableQuantity === 0) {
+    //   return;
+    // }
+    console.log('updatedata',data);
+  if(user){
+    console.log('user',user);
     data.contact_id=user.contact_id
-   insertCartData(data,addToast)
+    dispatch(updateCartData(data,addToast));
   }
   else{
-    addToast("Please Login", { appearance: "warning", autoDismiss: true });
-    }
+    setLoginModal(true)
+  }   
+   
   };
 
+  const onAddToCart = (data) => {
+    if (user) {
+      if (data.price) {
+        data.contact_id = user.contact_id;
+
+        dispatch(insertCartData(data, addToast)) 
+          .then(() => {
+            dispatch(fetchCartData(user));
+          })
+          .catch((error) => {
+            console.error('Failed to add to cart:', error);
+          });
+      }
+    } else {
+      addToast("Please Login", { appearance: "warning", autoDismiss: true });
+      setLoginModal(true);
+    }
+  };
+  
+  
   const onAddToWishlist = (data) => {
     if(user){
-  
+
       data.contact_id=user.contact_id
-   insertWishlistData(data,addToast)
+      insertWishlistData(data,addToast);
+    
   }
     else{
-      addToast("Please Login", { appearance: "warning", autoDismiss: true });
-      }
+      addToast("Please Login", { appearance: "warning", autoDismiss: true })
+      setLoginModal(true)
+    }
   };
 
   const onAddToCompare = (data) => {
@@ -82,9 +111,12 @@ const {addToast}=useToasts();
             colorClass={colorClass}
             product={product}
             currency={currency}
-            addToCart={onAddToCart}
-            addToWishlist={onAddToWishlist}
+            onAddToCart={onAddToCart}
+            onAddToWishlist={onAddToWishlist}
+            onUpdateCart={onUpdateCart}
             addToCompare={onAddToCompare}
+            wishlistItems={wishlistItems}
+            cartItems={cartItems} 
             cartItem={
               cartItems.filter((cartItem) => cartItem.product_id === product.product_id)[0]
             }
@@ -129,7 +161,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
   
     currency: state.currencyData,
-    cartItems: state.cartData,
+    cartItems: state.cartItems.cartItems,
     wishlistItems: state.wishlistData,
     compareItems: state.compareItems.compareItems
   };

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import featureIconData from "../../data/feature-icons/feature-icon-two.json";
-import FeatureIconTwoSingle from "../../components/feature-icon/FeatureIconTwoSingle.js";
+import FeatureIconTwoSingle from "../../components/feature-icon/FeatureIconSingle.js";
 import api from "../../constants/api";
 
 const FeatureIconTwo = ({ spaceTopClass, spaceBottomClass }) => {
@@ -23,12 +23,12 @@ const FeatureIconTwo = ({ spaceTopClass, spaceBottomClass }) => {
       }`}
     >
       <div className="container">
-        <div className="row feature-icon-two-wrap">
+        <div className="row">
           {shipping &&
             shipping.map((single, key) => {
               return (
                 <FeatureIconTwoSingle
-                  data={single}
+                singleFeature={single}
                   spaceBottomClass="mb-30"
                   textAlignClass="text-center"
                   key={key}

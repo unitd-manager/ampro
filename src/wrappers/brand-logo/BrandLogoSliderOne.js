@@ -1,31 +1,38 @@
 import PropTypes from "prop-types";
 import React from "react";
-import Swiper from "react-id-swiper";
+import Slider from "react-slick";
 import BrandLogoOneSingle from "../../components/brand-logo/BrandLogoOneSingle";
 import brandLogoData from "../../data/brand-logos/brand-logo-one.json";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-const BrandLogoSlider = ({ spaceBottomClass, spaceTopClass }) => {
+const BrandLogoSliderOne = ({ spaceBottomClass, spaceTopClass }) => {
   const settings = {
-    loop: true,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
-    },
-    grabCursor: true,
-    breakpoints: {
-      1024: {
-        slidesPerView: 5
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    arrows: false,
+    dots: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 4 }
       },
-      768: {
-        slidesPerView: 4
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 4 }
       },
-      640: {
-        slidesPerView: 3
+      {
+        breakpoint: 640,
+        settings: { slidesToShow: 3 }
       },
-      320: {
-        slidesPerView: 2
+      {
+        breakpoint: 320,
+        settings: { slidesToShow: 2 }
       }
-    }
+    ]
   };
 
   return (
@@ -36,28 +43,26 @@ const BrandLogoSlider = ({ spaceBottomClass, spaceTopClass }) => {
     >
       <div className="container">
         <div className="brand-logo-active">
-          <Swiper {...settings}>
+          <Slider {...settings}>
             {brandLogoData &&
-              brandLogoData.map((single, key) => {
-                return (
-                  <BrandLogoOneSingle
-                    data={single}
-                    key={key}
-                    sliderClassName="swiper-slide"
-                    spaceBottomClass="mb-30"
-                  />
-                );
-              })}
-          </Swiper>
+              brandLogoData.map((single, key) => (
+                <BrandLogoOneSingle
+                  data={single}
+                  key={key}
+                  sliderClassName="slick-slide"
+                  spaceBottomClass="mb-30"
+                />
+              ))}
+          </Slider>
         </div>
       </div>
     </div>
   );
 };
 
-BrandLogoSlider.propTypes = {
+BrandLogoSliderOne.propTypes = {
   spaceBottomClass: PropTypes.string,
   spaceTopClass: PropTypes.string
 };
 
-export default BrandLogoSlider;
+export default BrandLogoSliderOne;

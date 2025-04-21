@@ -473,8 +473,12 @@
   @media #{$xs-layout} {
     text-align: center;
   }
+  p{
+    color: #ffffff;
+    font-size: 20px;
+  }
   h3 {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: 500;
 
     position: relative;
@@ -482,7 +486,7 @@
     margin-bottom: 0;
     margin-left: 135px;
 
-    color: #000000;
+    color: #ffffff;
     @media #{$xs-layout} {
       margin-left: 0;
     }
@@ -557,8 +561,8 @@
 
       text-transform: uppercase;
 
-      color: #010101;
-      border: 1px solid #333;
+      color: #ffffff;
+      border: 1px solid #fff;
       background-color: #eeeff1;
       @media #{$xs-layout} {
         padding: 14px 30px 16px;
@@ -571,7 +575,7 @@
 
     &--style2 {
       a {
-        background-color: transparent;
+        background-color: #b8a0a0;
       }
     }
   }
@@ -2870,11 +2874,14 @@
   z-index: 1; /* Ensure proper stacking order */
   overflow: hidden; /* Prevent content overflow */
 }
+.single-slider-2 .slider-content-2 {
+  padding: 250px 0 0;
+}
 
 /* Mobile-specific styles */
 @media (max-width: 767px) {
   .single-slider-2 {
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     height: auto;
     padding: 10px;

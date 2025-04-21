@@ -6,10 +6,14 @@ import ShopCategories from "../../components/product/ShopCategories";
 import ShopTag from "../../components/product/ShopTag";
 import api from "../../constants/api";
 
-const ShopSidebar = ({ products, getSortParams, sideSpaceClass,handleSearchSubmit,handleSearchChange }) => {
+const ShopSidebar = ({ products, getSortParams, selectedCategories,setSelectedCategories,sideSpaceClass,handleSearchSubmit,handleSearchChange }) => {
 
   const uniqueTags = getIndividualTags(products);
 const[categories,setCategories]=useState([]);
+const[subCategories,setSubCategories]=useState([]);
+const[subCategoryTypes,setSubCategoryTypes]=useState([]);
+const[selectedSubCategory,setSelectedSubCategory]=useState([]);
+const[selectedSubCategoryTypes,setSelectedSubCategoryTypes]=useState([]);
 console.log('products',products)
 console.log('tags',uniqueTags);
   useEffect(()=>{
@@ -17,6 +21,14 @@ console.log('tags',uniqueTags);
      setCategories(res.data.data)
       
           }).catch(err=>{console.log(err)})
+          api.get('/category/getAllSubCategory').then((res)=>{
+            setSubCategories(res.data.data)
+             
+                 }).catch(err=>{console.log(err)})
+                 api.get('/category/getAllSubCategoryTypes').then((res)=>{
+                  setSubCategoryTypes(res.data.data)
+                   
+                       }).catch(err=>{console.log(err)})
   },[])
   return (
     <div className={`sidebar-style ${sideSpaceClass ? sideSpaceClass : ""}`}>
@@ -25,8 +37,16 @@ console.log('tags',uniqueTags);
 
       {/* filter by categories */}
       <ShopCategories
+      selectedCategories={selectedCategories}
+      setSelectedCategories={setSelectedCategories} 
+      setSelectedSubCategory={setSelectedSubCategory}
+      selectedSubCategory={selectedSubCategory}
+      selectedSubCategoryTypes={selectedSubCategoryTypes}
+      setSelectedSubCategoryTypes={setSelectedSubCategoryTypes}
         categories={categories}
         getSortParams={getSortParams}
+        subcategories={subCategories}
+        subcategoryTypes={subCategoryTypes}
       />
 
  {/* filter by tag */}

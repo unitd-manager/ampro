@@ -12,7 +12,7 @@ const TextGridOne = ({ spaceBottomClass }) => {
   const [about, setAbout] = useState([])
 
   const getAboutContent = () =>{
-    api.get('/content/getAboutUs',{recordType:'Record'}).then(res=>{
+    api.get('/content/getAboutUs').then(res=>{
       setAbout(res.data.data)
      })
   }

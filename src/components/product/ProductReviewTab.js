@@ -1,8 +1,19 @@
 import React from 'react'
 import Rating from "./sub-components/ProductRating";
 import RatingComment from './RatingComment';
+import Review from '../../pages/other/Review';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function ProductReviewTab({comments}) {
+function ProductReviewTab({orderedProducts,comments}) {
+  const { id } = useParams();
+console.log('id',id);
+  // Check if user has ordered this product
+  const hasOrderedProduct = orderedProducts.some(
+    (prod) => prod.product_id === parseInt(id) // ensure type match
+  );
+  console.log('hasOrderedProduct',hasOrderedProduct);
+  
+
   return (
     <div>
          <div className="row">
@@ -51,6 +62,7 @@ function ProductReviewTab({comments}) {
                     </div>
                   </div>)
             })}
+            {hasOrderedProduct && <Review/>}
                   </div>
     </div>
   )

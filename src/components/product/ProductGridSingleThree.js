@@ -7,6 +7,8 @@ import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import imageBase from "../../constants/imageBase";
 import { useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
 
 const ProductGridSingleTwo = ({
   product,
@@ -33,6 +35,10 @@ const ProductGridSingleTwo = ({
   const { addToast } = useToasts();
 const[loginModal , setLoginModal]=useState(false);
 
+const dispatch=useDispatch();
+
+
+const wishlistItems=useSelector(state=>state.wishlistItems.wishlistItems);
   const discountedPrice = getDiscountPrice(product.price, product.discount_amount);
   //const finalProductPrice = +(product.price * currency.currencyRate).toFixed(2);
   const finalProductPrice = +(product.price);
@@ -53,14 +59,13 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
   return (
     <Fragment>
       <div
-        className={`${
-          sliderClassName ? sliderClassName : ""
-        }`}
+        className="col-md-3"
       >
         <div
-          className={`product-wrap-2 ${
+          className={`product-wrap ${
             spaceBottomClass ? spaceBottomClass : ""
           } ${colorClass ? colorClass : ""} `}
+          style={{ padding: "10px" }}
         >
           <div className="product-img">
             <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
@@ -82,25 +87,36 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
               )}
               
             </Link>
-            {product.discount_amount || product.latest ? (
-                <div className="product-img-bad">
-              <div className="product-img-badges">
-                {product.discount_percentage ? (
-                  <span className="pink">{product.discount_percentage}%</span>
-                ) : (
-                  ""
-                )}
-                {product.latest ? <span className="purple" ><Badge style={{position:'relative',top:'2px',right:'5px'}}></Badge></span> : ""}
-                {product.top_seller ? <span className="purple" ><Badge style={{position:'relative',top:'5px',right:'2px'}}></Badge></span> : ""}
-                {product.most_popular ? <span className="purple"><Badge style={{position:'relative',top:'5px',right:'2px'}}></Badge></span> : ""}
-              </div>
-              </div>
-             
-            ) : (
-              ""
-            )}
+      
+            <div className="product-action">
+            <div className="pro-same-action pro-wishlist">
+  <button
+    className={`wishlist-btn ${wishlistItem !== undefined ? "active" : ""}`}
+    title={
+      wishlistItems.some(
+        (wishlistItem) => wishlistItem.product_id === product.product_id
+      )
+        ? "Added to wishlist"
+        : "Add to wishlist"
+    }
+    onClick={() => {
+      const isInWishlist = wishlistItems.some(
+        (wishlistItem) => wishlistItem.product_id === product.product_id
+      );
 
-            <div className="product-action-2">
+      console.log("wishlistitem", isInWishlist);
+
+      if (isInWishlist) {
+        dispatch(removeWishlistData(product, addToast));
+      } else {
+        onAddToWishlist(product);
+      }
+    }}
+  >
+    <i className={`fa ${wishlistItems.some((item) => item.product_id === product.product_id) ? "fa-heart" : "fa-heart-o"}`} />
+  </button>
+</div>
+
               {product.affiliateLink ? (
                 <a
                   href={product.affiliateLink}
@@ -119,6 +135,7 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                   <i className="fa fa-cog"></i>
                 </Link>
               ) : product.qty_in_stock && product.qty_in_stock > 0 ? (
+                <div class="pro-same-action pro-cart">
                 <button
                 onClick={ () => { 
                   if(cartItem?.qty>0){
@@ -127,17 +144,13 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                   onUpdateCart(product,addToast)
                 }else{
                   onAddToCart(product, addToast)}}}
-                  // className={
-                  //   cartItem !== undefined && cartItem.quantity > 0
-                  //     ? "active"
-                  //     : ""
-                  // }
+                
                   className={
                     product !== undefined && product.qt_in_stock > 0
                       ? "active"
                       : ""
                   }
-                  disabled={cartItem !== undefined && cartItem.quantity > 0}
+                  // disabled={cartItem !== undefined && cartItem.quantity > 0}
                   title={
                     cartItem !== undefined ? "Added to cart" : "Add to cart"
                   }
@@ -145,71 +158,36 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                   {" "}
                   <i className="fa fa-shopping-cart"></i>{" "}
                 </button>
+                </div>
               ) : (
+                <div class="pro-same-action pro-cart">
+
                 <button disabled className="active" title="Out of stock">
                   <i className="fa fa-shopping-cart"></i>
                 </button>
+                </div>
               )}
-
+            
+<div class="pro-same-action pro-quickview">
               <button onClick={() => setModalShow(true)} title="Quick View">
                 <i className="fa fa-eye"></i>
               </button>
-     
-              {/* <button
-                className={compareItem !== undefined ? "active" : ""}
-                disabled={compareItem !== undefined}
-                title={
-                  compareItem !== undefined
-                    ? "Added to compare"
-                    : "Add to compare"
-                }
-                onClick={() => {onAddToCompare(product,addToast)}}
-              >
-                <i className="fa fa-retweet"></i>
-              </button> */}
+     </div>
             </div>
           </div>
-          <div className="product-content-2">
+          <div className="product-content text-center">
             <div
               className={`title-price-wrap-2 ${
                 titlePriceClass ? titlePriceClass : ""
               }`}
             >
-              <h3>
-                <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
-                  <span className="product-name">{product.title}</span>
-                </Link>
-              </h3>
-           
-              <div className="price-2">
-                {discountedPrice !== null&&discountedPrice !== '' ? (
-                  <Fragment>
-                    <span>
-                      {currency.currencySymbol + finalDiscountedPrice}
-                    </span>{" "}
-                    <span className="old">
-                     ({currency.currencySymbol + finalProductPrice})
-                    </span>
-                  </Fragment>
-                ) : (
-                  <span>{currency.currencySymbol + finalProductPrice} </span>
-                )}
-              </div>
+             <h3 style={{ minHeight: "60px", display: "flex", alignItems: "center" }}>
+  <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id + "/" + formattedTitle}>
+    <span className="product-name">{product.title}</span>
+  </Link>
+</h3>
             </div>
-            <div className="pro-wishlist-2">
-              <button
-                className={wishlistItem !== undefined ? "active" : ""}
-                disabled={wishlistItem !== undefined}
-                title={
-                  wishlistItem !== undefined
-                    ? "Added to wishlist"
-                    : "Add to wishlist"
-                }
-                onClick={() =>{ onAddToWishlist(product,addToast)}}
-              >
-                <i className="fa fa-heart-o" />
-              </button>
-            </div>
+          
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment,useState,useEffect } from "react";
 import { useToasts } from "react-toast-notifications";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 // import { getProducts } from "../../helpers/product";
 import ProductGridSingleThree from "../../components/product/ProductGridSingleThree";
 import { addToCart } from "../../redux/actions/cartActions";
@@ -10,7 +10,7 @@ import { addToCompare } from "../../redux/actions/compareActions";
 import api from "../../constants/api";
 import LoginModal from "../../components/LoginModal";
 import { getUser } from "../../common/user";
-import { insertCartData,updateCartData } from "../../redux/actions/cartItemActions";
+import { fetchCartData, insertCartData,updateCartData } from "../../redux/actions/cartItemActions";
 import { insertWishlistData } from "../../redux/actions/wishlistItemActions";
 import { insertCompareData } from "../../redux/actions/compareItemActions";
 //import cartItemReducer from "../../redux/reducers/cartItemReducer";
@@ -32,12 +32,13 @@ const ProductGridThree = ({
   insertWishlistData,
   insertCompareData,
   // addToast
-  updateCartData,
-  InsertToCart
+  //updateCartData,
+  //InsertToCart
 }) => {
   const [user, setUser] = useState();
   const [loginModal,setLoginModal]=useState(false);
 const {addToast}=useToasts();
+const dispatch=useDispatch();
 const onUpdateCart = (data) => {
   // if (avaiableQuantity === 0) {
   //   return;
@@ -46,7 +47,7 @@ const onUpdateCart = (data) => {
 if(user){
   console.log('user',user);
   data.contact_id=user.contact_id
-  updateCartData(data,addToast)
+  dispatch(updateCartData(data,addToast));
 }
 else{
   setLoginModal(true)
@@ -55,12 +56,19 @@ else{
 };
 
 const onAddToCart = (data) => {
- 
+  console.log('insertcart',data);
   if(user){
-    if(data.price){
+    // if(data.price){
   data.contact_id=user.contact_id
-
-  InsertToCart(data,addToast);}
+  console.log('insertingcart',data);
+  dispatch(insertCartData(data, addToast)) 
+            .then(() => {
+              dispatch(fetchCartData(user));
+            })
+            .catch((error) => {
+              console.error('Failed to add to cart:', error);
+            });
+//}
   }
   else{
     addToast("Please Login", { appearance: "warning", autoDismiss: true })
@@ -193,12 +201,12 @@ const mapDispatchToProps = (dispatch) => {
     addToCompare: (item, addToast) => {
       dispatch(addToCompare(item, addToast));
     },
-    insertCartData: (item, addToast) => {
-      dispatch(insertCartData(item, addToast));
-    },
-    InsertToCart: (item, addToast) => {
-      dispatch(insertCartData(item, addToast));
-    },
+    // insertCartData: (item, addToast) => {
+    //   dispatch(insertCartData(item, addToast));
+    // },
+    // InsertToCart: (item, addToast) => {
+    //   dispatch(insertCartData(item, addToast));
+    // },
     updateCartData: (item, addToast) => {
       dispatch(updateCartData(item, addToast));
     },

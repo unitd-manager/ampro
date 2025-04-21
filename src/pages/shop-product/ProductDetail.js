@@ -11,12 +11,15 @@ import ProductImageDescription from "../../wrappers/product/ProductImageDescript
 import { useParams } from "react-router-dom/cjs/react-router-dom";
 import api from "../../constants/api";
 import LottieComponent from "../../components/LottieComponent";
+import { getUser } from "../../common/user";
 
 const ProductDetail = ({ location, product }) => {
   const { pathname } = location;
   const { id,title } = useParams();
   const [foundProduct, setFoundProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [orderedProducts, setOrderedProducts] = useState([]);
+  
   const [comments, setComments] = useState([]);
   const [productImages, setProductImages] = useState([]);
   // const foundProduct = getProductsBySlug(productData, slug);
@@ -29,14 +32,16 @@ const ProductDetail = ({ location, product }) => {
       .post("/product/getProductbyproductId", { product_id: id })
       .then((res) => {
         res.data.data[0].tag = String(res.data.data[0].tag).split(",");
+        res.data.data[0].grades = String(res.data.data[0].grades).split(",");
         res.data.data[0].images = String(res.data.data[0].images).split(",");
         setFoundProduct(res.data.data[0]);
         api
           .post("/product/getProductbyCategoryId", {
             category_id: res.data.data[0].category_id,
           })
-          .then((res) => {
-            setRelatedProducts(res.data.data);
+          .then((resp) => {
+            const relateds=resp.data.data.filter((el)=>{return el.product_id !=res.data.data[0].product_id})
+            setRelatedProducts(relateds);
             setLoading(false);
           })
           .catch((err) => {
@@ -48,6 +53,7 @@ const ProductDetail = ({ location, product }) => {
       });
   }, [id]);
   useEffect(() => {
+    const user=getUser();
     api
       .post("/comment/getcommentsByProductId", {
         record_id: id,
@@ -59,14 +65,25 @@ const ProductDetail = ({ location, product }) => {
       .catch((err) => {
         console.log(err);
       });
+
+      api
+      .post("/enquiry/getEnqProdByContactId", {
+        contact_id: user?.contact_id
+      })
+      .then((res) => {
+        setOrderedProducts(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [id]);
   return (
     <Fragment>
       <MetaTags>
-        <title>Pearl | Product Page</title>
+        <title>Ampro | Product Page</title>
         <meta
           name="description"
-          content="Product page of Pearl react minimalist eCommerce template."
+          content="Product page of Ampro react minimalist eCommerce template."
         />
       </MetaTags>
 
@@ -99,6 +116,7 @@ const ProductDetail = ({ location, product }) => {
             <ProductDescriptionTab
               spaceBottomClass="pb-90"
               product={foundProduct}
+              orderedProducts={orderedProducts}
               comments={comments}
             />
             {/* related product slider */}

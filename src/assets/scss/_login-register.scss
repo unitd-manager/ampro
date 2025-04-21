@@ -58,6 +58,9 @@
     }
     .login-register-form {
       form {
+        .error {
+          color: red;
+        }
         input {
           background-color: transparent;
           border: 1px solid #ebebeb;
@@ -66,6 +69,11 @@
           height: 45px;
           margin-bottom: 30px;
           padding: 0 15px;
+        }
+        .error {
+          color: red; // Make error text red
+          font-size: 13px; // Optional: Adjust size for neatness
+          display: block; // Ensure it takes full line
         }
         input[type="checkbox"] {
           height: 15px;

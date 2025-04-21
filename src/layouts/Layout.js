@@ -10,7 +10,7 @@ const Layout = ({
   headerPaddingClass,
   headerPositionClass
 }) => {
-
+ 
 
   return (
     <Fragment>

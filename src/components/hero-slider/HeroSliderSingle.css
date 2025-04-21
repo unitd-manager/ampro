@@ -1,0 +1,18 @@
+.single-slider-2 {
+    min-height: 600px; /* Default for large screens */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  @media (max-width: 1024px) {
+    .single-slider-2 {
+      min-height: 500px; /* For tablets */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .single-slider-2 {
+      min-height: 400px; /* For mobile screens */
+    }
+  }
+  
