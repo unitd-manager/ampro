@@ -94,7 +94,7 @@ const TabProductTwo = ({
 
                       <img
   className="hover-img"
-  src={`http://amproadmin.zaitunsoftsolutions.com/storage/uploads/${product.images[0]}`}
+  src={`https://amproadmin.zaitunsoftsolutions.com/storage/uploads/${product.images[0]}`}
   alt={product.title}
 />
 </Link>

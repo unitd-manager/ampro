@@ -1,2 +1,2 @@
-const imageBase = 'http://amproadmin.zaitunsoftsolutions.com/storage/uploads/'
+const imageBase = 'https://amproadmin.zaitunsoftsolutions.com/storage/uploads/'
 export default imageBase
