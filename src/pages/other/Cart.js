@@ -271,14 +271,16 @@ api
                 <h3 className="cart-page-title">Your cart items</h3>
                 <div className="table-content table-responsive cart-table-content">
                   <table>
-                    <thead>
-                      <tr>
-                        <th>Image</th>
-                        <th>Product Name</th>
-                        <th>Qty</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Product Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Total</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
                     <tbody>
                       {cartItems?.map((item, index) => (
                         <tr key={index}>
@@ -292,6 +294,9 @@ api
                             </Link>
                           </td>
                           <td className="product-name text-center">{item.title}</td>
+                          <td className="product-price text-center">
+                            ${item.discount_amount ? (item.price - item.discount_amount).toFixed(2) : item.price.toFixed(2)}
+                          </td>
                           <td className="product-quantity">
                             <div className="cart-plus-minus">
                               <button
@@ -314,6 +319,9 @@ api
                               </button>
                             </div>
                           </td>
+                          <td className="product-subtotal text-center">
+                            ${((item.discount_amount ? item.price - item.discount_amount : item.price) * item.qty).toFixed(2)}
+                          </td>
                           <td className="product-remove">
                             <button onClick={() => handleRemoveItem(item)}>
                               <i className="fa fa-times"></i>
@@ -325,17 +333,23 @@ api
                   </table>
                 </div>
                 <div className="grand-totall">
+                  <h4 style={{ fontSize: '24px', fontWeight: 'bold', float:'right' }}>
+                    Grand Total: ${cartTotalPrice.toFixed(2)}
+                  </h4>
                   <div className="button-group">
-                  <Link onClick={() => generateCode()} className="checkout-btn">
-                  Submit Enquiry
-                    </Link>
+                    {cartItems.length > 0 &&<div className="form-group">
+ 									    <button className="clear-btn" 
+                        onClick={()=>{history.push('/checkout',cartItems)}} type="button" 
+                        style={{ backgroundColor: "#1fb0c1", color: "white", borderRadius: 50 }}
+                      >Proceed to Checkout</button>
+ 								    
                     <button type="button"
                       onClick={()=>handleClearCart()}
-                      className="clear-btn"
+                      className="clear-btn ml-10"
                       style={{ backgroundColor: "red", color: "white", borderRadius: 50 }}
                     >
-                      CLEAR CART
-                    </button>
+                      Clear Cart
+                    </button></div>}
                   </div>
                 </div>
               </Fragment>

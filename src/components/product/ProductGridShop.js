@@ -58,9 +58,7 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
 
   return (
     <Fragment>
-      <div
-        className="col-md-4"
-      >
+      <div className="col-md-4">
         <div
           className={`product-wrap ${
             spaceBottomClass ? spaceBottomClass : ""
@@ -84,38 +82,36 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 />
               ) : (
                 ""
-              )}
-              
-            </Link>
-      
+              )}              
+            </Link>      
             <div className="product-action">
-            <div className="pro-same-action pro-wishlist">
-  <button
-    className={`wishlist-btn ${wishlistItem !== undefined ? "active" : ""}`}
-    title={
-      wishlistItems.some(
-        (wishlistItem) => wishlistItem.product_id === product.product_id
-      )
-        ? "Added to wishlist"
-        : "Add to wishlist"
-    }
-    onClick={() => {
-      const isInWishlist = wishlistItems.some(
-        (wishlistItem) => wishlistItem.product_id === product.product_id
-      );
+              <div className="pro-same-action pro-wishlist">
+                <button
+                  className={`wishlist-btn ${wishlistItem !== undefined ? "active" : ""}`}
+                  title={
+                    wishlistItems.some(
+                      (wishlistItem) => wishlistItem.product_id === product.product_id
+                    )
+                      ? "Added to wishlist"
+                      : "Add to wishlist"
+                  }
+                  onClick={() => {
+                    const isInWishlist = wishlistItems.some(
+                      (wishlistItem) => wishlistItem.product_id === product.product_id
+                    );
 
-      console.log("wishlistitem", isInWishlist);
+                    console.log("wishlistitem", isInWishlist);
 
-      if (isInWishlist) {
-        dispatch(removeWishlistData(product, addToast));
-      } else {
-        onAddToWishlist(product);
-      }
-    }}
-  >
-    <i className={`fa ${wishlistItems.some((item) => item.product_id === product.product_id) ? "fa-heart" : "fa-heart-o"}`} />
-  </button>
-</div>
+                    if (isInWishlist) {
+                      dispatch(removeWishlistData(product, addToast));
+                    } else {
+                      onAddToWishlist(product);
+                    }
+                  }}
+                >
+                  <i className={`fa ${wishlistItems.some((item) => item.product_id === product.product_id) ? "fa-heart" : "fa-heart-o"}`} />
+                </button>
+              </div>
 
               {product.affiliateLink ? (
                 <a
@@ -168,11 +164,11 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 </div>
               )}
             
-<div class="pro-same-action pro-quickview">
-              <button onClick={() => setModalShow(true)} title="Quick View">
-                <i className="fa fa-eye"></i>
-              </button>
-     </div>
+              <div class="pro-same-action pro-quickview">
+                <button onClick={() => setModalShow(true)} title="Quick View">
+                  <i className="fa fa-eye"></i>
+                </button>
+              </div>
             </div>
           </div>
           <div className="product-content text-center">
@@ -181,13 +177,31 @@ const formattedTitle = product.title.replace(/\s+/g, '-');
                 titlePriceClass ? titlePriceClass : ""
               }`}
             >
-             <h3 style={{ minHeight: "60px", display: "flex", alignItems: "center" }}>
-  <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id + "/" + formattedTitle}>
-    <span className="product-name">{product.title}</span>
-  </Link>
-</h3>
-            </div>
-          
+              <h3 style={{ minHeight: "60px", display: "flex", alignItems: "center" }}>
+                <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id + "/" + formattedTitle}>
+                  <span className="product-name">{product.title}</span>
+                </Link>
+              </h3>
+              <div className="product-price">
+                {discountedPrice !== null ? (
+                  <Fragment>
+                    <span className="old">
+                      {currency.currencySymbol}
+                      {finalProductPrice.toFixed(2)}
+                    </span>{" "}
+                    <span className="new">
+                      {currency.currencySymbol}
+                      {finalDiscountedPrice.toFixed(2)}
+                    </span>
+                  </Fragment>
+                ) : (
+                  <span>
+                    {currency.currencySymbol}
+                    {finalProductPrice.toFixed(2)}
+                  </span>
+                )}
+              </div>
+            </div>          
           </div>
         </div>
       </div>

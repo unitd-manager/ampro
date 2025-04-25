@@ -11,7 +11,7 @@ const PaymentForm = () => {
     const options = {
       purpose: 'Product name', // REQUIRED
       amount: 20, // REQUIRED and must be > ₹3 (3 INR)
-      currency: 'INR',
+      currency: 'SGD',
       buyer_name: '',
       email: '',
       phone: null,
