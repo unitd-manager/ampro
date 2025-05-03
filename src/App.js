@@ -85,6 +85,10 @@ const StoreLocatorPage = lazy(() => import("./wrappers/footer/StoreLocatorPage")
 const ReturnsPage = lazy(() => import("./wrappers/footer/ReturnsPage"));
 const SupportPage = lazy(() => import("./wrappers/footer/SupportPage"));
 const FaqPage = lazy(() => import("./wrappers/footer/FaqPage"));
+const PrivacyPolicyPage = lazy(() => import("./wrappers/footer/PrivacyPolicyPage"));
+const RefundPolicyPage = lazy(() => import("./wrappers/footer/RefundPolicyPage"));
+const DisclaimerPage = lazy(() => import("./wrappers/footer/DisclaimerPage"));
+
 
 const App = (props) => {
   
@@ -315,6 +319,18 @@ const App = (props) => {
                 <Route
                   path={process.env.PUBLIC_URL + "/faqpage"}
                   component={FaqPage}
+                />
+                 <Route
+                  path={process.env.PUBLIC_URL + "/privacypolicypage"}
+                  component={PrivacyPolicyPage}
+                />
+                <Route
+                  path={process.env.PUBLIC_URL + "/refundpolicypage"}
+                  component={RefundPolicyPage}
+                />
+                <Route
+                  path={process.env.PUBLIC_URL + "/disclaimerpage"}
+                  component={DisclaimerPage}
                 />
 <Route exact component={NotFound} />
 
