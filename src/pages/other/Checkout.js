@@ -16,11 +16,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import Payment from "../../components/Payment";
 import Stripe from "stripe";
 import { Input } from "reactstrap";
-import CheckoutRazorpay from "./CheckoutRazorpay";
 import InstaPay from "./InstaPay";
 import { clearCartData } from "../../redux/actions/cartItemActions";
-//import DistanceCalculator from "../../components/DistaceCalculator";
-
 
 const stripePromise = loadStripe(
   "pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
@@ -31,13 +28,12 @@ const stripe = Stripe(
 
 const Checkout = ({
   location,
-  // cartItems,
   currency,
 }) => {
   const { pathname } = location;
   let cartTotalPrice = 0;
   const history = useHistory();
-const [stripeToken, setStripeToken]=useState();
+  const [stripeToken, setStripeToken]=useState();
 
   const pay = async (token) => {
     api
@@ -65,6 +61,7 @@ const [stripeToken, setStripeToken]=useState();
       }
     );
     if (response.status === 200) {
+      placeOrder('Paid');
       handleSuccess();
     }
   } catch (error) {
@@ -72,22 +69,18 @@ const [stripeToken, setStripeToken]=useState();
     console.log(error);
   }
   };
-
-
   
   useEffect(()=>{
-const makeRequest=async()=>{
-  try{
-const res=await api.post('/orders/api/payment',{
-token:stripeToken,
-amount:cartTotalPrice*100
-})
-history.push('/order-success')
+    const makeRequest=async()=>{
+      try{
+    const res=await api.post('/orders/api/payment',{
+    token:stripeToken,
+    amount:cartTotalPrice*100
+    })
+    history.push('/order-success')
   }
   catch{
-
-  }
-  
+  }  
 }
 stripeToken && makeRequest();
   },[stripeToken,cartTotalPrice,history])
@@ -112,9 +105,7 @@ stripeToken && makeRequest();
   const { addToast } = useToasts();
 
   const placeOrder = (os) => {
-    console.log("userData", userData);
-   
-
+    console.log("userData", userData);   
     if (userData) {
       orderDetail.contact_id = userData.contact_id;
       orderDetail.cust_first_name = userData.first_name;
@@ -176,8 +167,7 @@ stripeToken && makeRequest();
       return `${day}-${month}-${year}`;
     };
 
-    {
-      
+    {      
       const to = userData.email;
       const dynamic_template_data= 
       {
@@ -199,45 +189,10 @@ stripeToken && makeRequest();
           appearance: "success",
           autoDismiss: true,
         })
-      });
-    
+      });    
     };
-
   };
 
-  const [razorpayLiveKey, setRazorpayLiveKey] = useState("");
- 
-
-  const getRazorpayKey = () => {
-    api.get("/setting/getRazorpayLiveKey").then((res) => {
-      setRazorpayLiveKey(res.data.data[0]);
-    });
-  };
-  const [razorpayTestKey, setRazorpayTestKey] = useState("");
- 
-
-  const getRazorpayTestKey = () => {
-    api.get("/setting/getRazorpayTestKey").then((res) => {
-      setRazorpayTestKey(res.data.data[0]);
-    });
-  };
-
-  const [paymentMode, setPaymentMode] = useState("");
- 
-
-  const getPaymentmode = () => {
-    api.get("/setting/getPaymentmode").then((res) => {
-      setPaymentMode(res.data.data[0]);
-    });
-  };
-  const apikey=paymentMode?.value ==='live'? razorpayLiveKey?.value: razorpayTestKey?.value;
-
-
-  console.log('paymentmode',paymentMode);
-  console.log('razorpaylive',razorpayLiveKey);
-  console.log('razorpaytest',razorpayTestKey);
-
-  console.log('apikey',apikey);
 
   useEffect(() => {
     const user = getUser();
@@ -256,9 +211,6 @@ stripeToken && makeRequest();
         });
     }
     getAllCountries();
-    getRazorpayKey();
-    getPaymentmode();
-    getRazorpayTestKey();
   }, []);
 
   return (
@@ -511,48 +463,15 @@ stripeToken && makeRequest();
                         </div>
                       </div>
                       <div className="payment-method">
-                        {/* <PayPalScriptProvider
-                          options={{
-                            "client-id":
-                              "ActPqt3MVzbwuKZfPIItIysHPTNkOVvpiEaHYUJosBQ4uO7NxOKOntLKfk2rxQH9RnAfC8B_cq26TQXy",
-                          }}
-                        >
-                          <PayPalButtons
-                            createOrder={(data, actions) => {
-                              return actions.order.create({
-                                purchase_units: [
-                                  {
-                                    amount: {
-                                      value: cartTotalPrice, // Set the amount to charge
-                                    },
-                                  },
-                                ],
-                              });
-                            }}
-                            onApprove={(data, actions) => {
-                              return actions.order
-                                .capture()
-                                .then(function (details) {
-                                  // Handle the payment success
-                                  console.log(details);
-                                });
-                            }}
-                          />
-                        </PayPalScriptProvider>
-                      
-                        <Payment
+                        <StripeCheckout
+                          name="Ampro Store"
+                          description={`Your total is ${currency.currencySymbol}${cartTotalPrice.toFixed(2)}`}
                           amount={cartTotalPrice * 100}
-                          placeOrder={placeOrder}
-                        /> */}
-                        <CheckoutRazorpay 
-                        amount={cartTotalPrice * 100}
-                        placeOrder={placeOrder}
-                        apikey={apikey}
+                          token={onToken}
+                          stripeKey="pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
+                          currency={currency.currencyCode}
+                          email={userData?.email}
                         />
-                        {/* <InstaPay
-                        amount={cartTotalPrice * 100}
-                        placeOrder={placeOrder}
-                        /> */}
                       </div>
                     </div>
                     {/* <div className="place-order mt-25">
