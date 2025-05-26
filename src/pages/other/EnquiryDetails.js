@@ -681,7 +681,7 @@ console.log('receiptUrl',receiptUrl)
           className="d-flex justify-content-between align-items-center my-2"
         >
           <a
-            href={`http://amproadmin.zaitunsoftsolutions.com/storage/uploads/${res1.name}`}
+            href={`http://ampro.zaitunsoftsolutions.com/storage/uploads/${res1.name}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-decoration-none d-flex align-items-center text-primary"
