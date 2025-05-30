@@ -42,7 +42,7 @@ const user=getUser();
       </div>
 
       <div className="same-language-currency">
-        <p>Call Us +91 97891 82749</p>
+        <p>Call Us +65 9028 8134</p>
       </div>
      {user&& <div className="same-language-currency welcome-section">
         <p>Welcome, {user.first_name}</p>
