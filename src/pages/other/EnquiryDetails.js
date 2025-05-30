@@ -486,7 +486,7 @@ console.log('receiptUrl',receiptUrl)
           className="d-flex justify-content-between align-items-center my-2"
         >
           <a
-            href={`https://ampro.zaitunsoftsolutions.com:2004/category/download/${res.name}`}
+            href={`https://amproadmin.zaitunsoftsolutions.com:2004/category/download/${res.name}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-decoration-none d-flex align-items-center text-primary"
@@ -551,7 +551,7 @@ console.log('receiptUrl',receiptUrl)
           className="d-flex justify-content-between align-items-center my-2"
         >
           <a
-            href={`https://ampro.zaitunsoftsolutions.com:2004/category/download/${res1.name}`}
+            href={`https://amproadmin.zaitunsoftsolutions.com:2004/category/download/${res1.name}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-decoration-none d-flex align-items-center text-primary"
@@ -616,7 +616,7 @@ console.log('receiptUrl',receiptUrl)
           className="d-flex justify-content-between align-items-center my-2"
         >
           <a
-            href={`https://ampro.zaitunsoftsolutions.com:2004/category/download/${res1.name}`}
+            href={`https://amproadmin.zaitunsoftsolutions.com:2004/category/download/${res1.name}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-decoration-none d-flex align-items-center text-primary"
@@ -681,7 +681,7 @@ console.log('receiptUrl',receiptUrl)
           className="d-flex justify-content-between align-items-center my-2"
         >
           <a
-            href={`http://ampro.zaitunsoftsolutions.com/storage/uploads/${res1.name}`}
+            href={`http://amproadmin.zaitunsoftsolutions.com/storage/uploads/${res1.name}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-decoration-none d-flex align-items-center text-primary"
