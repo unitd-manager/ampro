@@ -42,10 +42,9 @@ const TabProductTwo = ({
                          <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
                         <h5 className="product-title">{product.title}</h5>
                         </Link>
-                        <p className="product-desc" dangerouslySetInnerHTML={{ 
-  __html: product.product_description?.split(" ").slice(0, 10).join(" ") + (product.product_description?.split(" ").length > 10 ? "..." : "")
-}} />
-                       
+                <p style={{ fontWeight: "bold", fontSize: "16px", marginTop: "5px" }}>
+                  ${product.price}
+                </p>                       
             <div className="pro-wishlist">
             {product.qty_in_stock > 0 ? (
                 <button

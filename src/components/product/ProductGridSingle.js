@@ -58,7 +58,7 @@ const ProductGridSingle = ({
             <h3>
               <Link to={`${process.env.PUBLIC_URL}/product/${product.product_id}/${formattedTitle}`}>{product.title}</Link>
             </h3>
-            {/* <div className="product-price">
+            <div className="product-price">
               {discountedPrice !== null ? (
                 <Fragment>
                   <span>{currency.currencySymbol + finalDiscountedPrice}</span>
@@ -67,7 +67,7 @@ const ProductGridSingle = ({
               ) : (
                 <span>{currency.currencySymbol + finalProductPrice}</span>
               )}
-            </div> */}
+            </div>
               {/* <div className="product-rating">
                 <Rating ratingValue={product.top_rating} />
               </div> */}
