@@ -76,9 +76,9 @@ const IconGroup = ({
               <li>
                 <Link to={process.env.PUBLIC_URL + "/my-account"}>My Profile</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to={process.env.PUBLIC_URL + "/enquiries"}>Enquiry History</Link>
-              </li>
+              </li> */}
               <li>
                 <Link to={process.env.PUBLIC_URL + "/shippingaddress"}>
                   Shipping Address
