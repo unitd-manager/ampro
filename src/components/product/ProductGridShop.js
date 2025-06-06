@@ -33,9 +33,9 @@ const ProductGridSingleTwo = ({
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
-const[loginModal , setLoginModal]=useState(false);
+  const[loginModal , setLoginModal]=useState(false);
 
-const dispatch=useDispatch();
+  const dispatch=useDispatch();
 
 
 const wishlistItems=useSelector(state=>state.wishlistItems.wishlistItems);
@@ -49,12 +49,16 @@ const wishlistItems=useSelector(state=>state.wishlistItems.wishlistItems);
     discountedPrice * currency.currencyRate
   ).toFixed(2);
   
+  if (!product || !product.title) {
+    return <div className="text-center">No product to display.</div>;
+  }
+
 product.images= String(product.images).split(',')
 console.log('file',product)
 console.log('images',product.images)
 console.log('cartItem',cartItem)
 console.log('cartItems',cartItems)
-const formattedTitle = product.title.replace(/\s+/g, '-');
+const formattedTitle = (product?.title || '').replace(/\s+/g, '-');
 
   return (
     <Fragment>
