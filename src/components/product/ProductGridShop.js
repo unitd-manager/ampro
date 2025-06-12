@@ -9,6 +9,7 @@ import imageBase from "../../constants/imageBase";
 import { useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
+import defaultImage from "../../assets/images/noimage.jpg";
 
 const ProductGridSingleTwo = ({
   product,
@@ -73,14 +74,16 @@ const formattedTitle = (product?.title || '').replace(/\s+/g, '-');
             <Link to={process.env.PUBLIC_URL + "/product/" + product.product_id+"/"+formattedTitle}>
               <img
                 className="default-img"
-                src={`${imageBase}${product.images[0]}`}
+                src={product.images[0] ? `${imageBase}${product.images[0]}` : defaultImage}
+                onError={(e) => { e.target.onerror = null; e.target.src = defaultImage; }}
                 alt=""
                 style={{height:'250px',width:'250px'}}
               />
                {product.images.length > 1 ? (
                 <img
                   className="hover-img"
-                  src={`${imageBase}${product.images[1]}`}
+                  src={product.images[1] ? `${imageBase}${product.images[1]}` : defaultImage}
+                  onError={(e) => { e.target.onerror = null; e.target.src = defaultImage; }}
                   alt=""
                   style={{height:'250px',width:'250px'}}
                 />

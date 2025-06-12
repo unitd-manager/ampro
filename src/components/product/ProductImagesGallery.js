@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import imageBase from '../../constants/imageBase';
+import defaultImage from '../../assets/images/noimage.jpg';
 
 const ProductImagesGallery = ({ product, productImages }) => {
   // Default to the first image
@@ -24,7 +25,11 @@ const ProductImagesGallery = ({ product, productImages }) => {
       {/* Main Image Display */}
       <div style={{ marginBottom: '12px' }}>
         <img
-          src={`${imageBase}${mainImage}`}
+          src={mainImage ? `${imageBase}${mainImage}` : defaultImage}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = defaultImage;
+          }}
           alt="Main Product"
           style={{
             width: '100%',
@@ -57,7 +62,11 @@ const ProductImagesGallery = ({ product, productImages }) => {
             }}
           >
             <img
-              src={`${imageBase}${img}`}
+              src={img ? `${imageBase}${img}` : defaultImage}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = defaultImage;
+              }}
               alt={`Thumbnail ${index}`}
               style={{
                 width: '100px', // Fixed thumbnail width
