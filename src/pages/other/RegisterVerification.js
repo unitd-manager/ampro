@@ -39,7 +39,7 @@ const LoginRegister = ({ location }) => {
                     <Nav variant="pills" className="login-register-tab-list">
                       <Nav.Item>
                         <Nav.Link eventKey="login">
-                          <h4>Code Verification</h4>
+                          <h4>Code Verification1</h4>
                         </Nav.Link>
                       </Nav.Item>
                     

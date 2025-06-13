@@ -123,14 +123,14 @@ function Register() {
               autoDismiss: true,
             });
             sendMail();
-            setTimeout(() => {
-              // Pass the contact ID as state to the next page
-              history.push({
-                pathname: `/register-verification/${signupData.email}`,
-               state: { otpNo: signupData.otp_no, mobNo: signupData.mobile },
+            // setTimeout(() => {
+            //   // Pass the contact ID as state to the next page
+            //   history.push({
+            //     pathname: `/register-verification/${signupData.email}`,
+            //    state: { otpNo: signupData.otp_no, mobNo: signupData.mobile },
              
-              });
-            }, 1000);
+            //   });
+            // }, 1000);
            
             // console.log('contact',res.data.data.contact_id);
             console.log('cont',signupData);
