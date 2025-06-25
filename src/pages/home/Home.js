@@ -15,6 +15,9 @@ import HeroSliderNine from "../../wrappers/hero-slider/HeroSliderNine";
 import TopBrands from "../../components/TopBrands";
 import FeaturesSection from "../../components/FeaturesSection";
 import DiscountModal from "../../components/DiscountModal";
+import USPSection from "../../components/USPSection";
+
+import "../../assets/scss/_home-redesign.scss";
 
 const Home = () => {
   const slideInterval = 3000;
@@ -128,15 +131,16 @@ const Home = () => {
           content="Home of Ampro eCommerce template."
         />
       </MetaTags>
-      <Layout headerTop="visible">
+      <Layout headerTop="visible" className="home-page">
         <HeroSliderNine
           interval={slideInterval}
           sliderData={sliderData}
+          className="hero-slider"
         />
         <br />
         <br />
         {/* <HeroSlider /> */}
-        <FeatureIcon spaceTopClass="pt-100" spaceBottomClass="pb-60" />
+        <FeatureIcon spaceTopClass="pt-100" spaceBottomClass="pb-60" className="feature-icons" />
 
 
         {/* tab product */}
@@ -146,6 +150,7 @@ const Home = () => {
           newProducts={newProducts}
           bestSellingProducts={bestSellingProducts}
           mostPopularProducts={mostPopularProducts}
+          className="product-tabs"
         />
         {/* <TopBrands/> */}
         <TabProductThree
@@ -153,9 +158,11 @@ const Home = () => {
           category="furniture"
           bestSellingProducts={bestSellingProducts}
           mostPopularProducts={mostPopularProducts}
-          
+          className="product-tabs"
         />
  <FeaturesSection spaceBottomClass="pb-100"/>
+       <USPSection />
+
         <section
           style={{
             width: "100%",
@@ -203,6 +210,7 @@ const Home = () => {
           category="furniture"
           bestSellingProducts={bestSellingProducts}
           mostPopularProducts={mostPopularProducts}
+          className="product-tabs"
         />
 
         {/* Top Deals */}
