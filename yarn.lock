@@ -10230,14 +10230,13 @@
     "prop-types" "^15.6.2"
     "scheduler" "^0.19.1"
 
-"react-dom@^17.0.1":
-  "integrity" "sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug=="
-  "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.1.tgz"
-  "version" "17.0.1"
+"react-dom@^18.2.0":
+  "integrity" "sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw=="
+  "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz"
+  "version" "18.3.1"
   dependencies:
     "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
-    "scheduler" "^0.20.1"
+    "scheduler" "^0.23.2"
 
 "react-dom@16.4.2":
   "integrity" "sha512-Usl73nQqzvmJN+89r97zmeUpQDKDlh58eX6Hbs/ERdDHzeBzWy+ENk7fsGQ+5KxArV1iOFPT46/VneklK9zoWw=="
@@ -10677,13 +10676,12 @@
     "object-assign" "^4.1.1"
     "prop-types" "^15.6.2"
 
-"react@^17.0.1":
-  "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
-  "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
-  "version" "17.0.1"
+"react@^18.2.0":
+  "integrity" "sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ=="
+  "resolved" "https://registry.npmjs.org/react/-/react-18.3.1.tgz"
+  "version" "18.3.1"
   dependencies:
     "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
 
 "react@16.4.2":
   "integrity" "sha512-dMv7YrbxO4y2aqnvA7f/ik9ibeLSHQJTI6TrYAenPSaQ6OXfb+Oti+oJiy8WBxgRzlKatYqtCjphTgDSCEiWFg=="
@@ -11297,13 +11295,12 @@
     "loose-envify" "^1.1.0"
     "object-assign" "^4.1.1"
 
-"scheduler@^0.20.1":
-  "integrity" "sha512-LKTe+2xNJBNxu/QhHvDR14wUXHRQbVY5ZOYpOGWRzhydZUqrLb2JBvLPY7cAqFmqrWuDED0Mjk7013SZiOz6Bw=="
-  "resolved" "https://registry.npmjs.org/scheduler/-/scheduler-0.20.1.tgz"
-  "version" "0.20.1"
+"scheduler@^0.23.2":
+  "integrity" "sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ=="
+  "resolved" "https://registry.npmjs.org/scheduler/-/scheduler-0.23.2.tgz"
+  "version" "0.23.2"
   dependencies:
     "loose-envify" "^1.1.0"
-    "object-assign" "^4.1.1"
 
 "schema-utils@^1.0.0":
   "integrity" "sha512-i27Mic4KovM/lnGsy8whRCHhc7VicJajAjTrYg11K9zfZXnYIt4k5F+kZkwjnrhKzLic/HLU4j11mjsz2G/75g=="
