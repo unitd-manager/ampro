@@ -175,7 +175,7 @@ const Home = () => {
         >
           <div className=" row">
               <div className="col-md-6 col-lg-6" style={{textAlign: 'center', marginTop:120}}>
-                <h2 className="title">Deal Of The Week</h2>
+                <h2 className="title">DeaThe Week</h2>
                 <div className="des" style={{marginTop:20, marginBottom:40}}>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elitt <br />
                     incididunt ut labore{" "}
