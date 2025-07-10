@@ -1,5 +1,5 @@
 # Step 1: Build React App
-FROM node:16.18.0-alpine as build
+FROM node:18-alpine as build
 
 WORKDIR /app
 COPY package*.json ./
