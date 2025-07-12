@@ -15,7 +15,7 @@ jobs:
 
       - name: 🔧 Install Dependencies
         run: |
-          npm install
+          npm install --force
           npm run build
 
       - name: 📤 Deploy to aaPanel Domain Folder
