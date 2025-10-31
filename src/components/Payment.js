@@ -4,7 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
 import api from "../constants/api";
-import PaymentForm from "./PaymentForm";
+// import PaymentForm from "./PaymentForm";
 
 
 function Payment({amount,placeOrder}) {

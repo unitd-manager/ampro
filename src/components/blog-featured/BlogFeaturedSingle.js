@@ -5,16 +5,13 @@ import api from "../../constants/api";
 import { Col, Row } from "reactstrap";
 import imageBase from "../../constants/imageBase";
 
-const BlogFeaturedSingle = ({}) => {
+const BlogFeaturedSingle = () => {
   const [blogs, setBlogs] = useState();
-  const getBlog = () => {
-    api.get("/blog/getHomeBlog", blogs).then((res) => {
-      setBlogs(res.data.data);
-    });
-  };
 
   useEffect(() => {
-    getBlog();
+    api.get("/blog/getHomeBlog").then((res) => {
+      setBlogs(res.data.data);
+    });
   }, []);
 
   return (
@@ -22,14 +19,12 @@ const BlogFeaturedSingle = ({}) => {
       <Row>
         {blogs &&
           blogs.map((data) => (
-            <Col md={4}>
+            <Col md={4} key={data.blog_id}>
               <div className="blog-wrap mb-30 scroll-zoom">
                 <div className="blog-img">
                   <Link
-                    to={
-                      process.env.PUBLIC_URL + `/blog-details/${data.blog_id}/${data.title}`
-                    }
-                    state={{ data: data }}
+                    to={`/blog-details/${data.blog_id}/${data.title}`}
+                    state={{ data }}
                   >
                     <img
                       src={`${imageBase}${data.file_name}`}
@@ -39,16 +34,12 @@ const BlogFeaturedSingle = ({}) => {
                     />
                   </Link>
                 </div>
-
                 <div className="blog-content-wrap">
                   <div className="blog-content text-center">
                     <h3>
                       <Link
-                        to={
-                          process.env.PUBLIC_URL +
-                          `/blog-details/${data.blog_id}/${data.title}`
-                        }
-                        state={{ data: data }}
+                        to={`/blog-details/${data.blog_id}/${data.title}`}
+                        state={{ data }}
                       >
                         {data.title}
                       </Link>
@@ -56,11 +47,8 @@ const BlogFeaturedSingle = ({}) => {
                     <span>
                       By{" "}
                       <Link
-                        to={
-                          process.env.PUBLIC_URL +
-                          `/blog-details/${data.blog_id}/${data.title}`
-                        }
-                        state={{ data: data }}
+                        to={`/blog-details/${data.blog_id}/${data.title}`}
+                        state={{ data }}
                       >
                         {data.author}
                       </Link>
@@ -76,7 +64,7 @@ const BlogFeaturedSingle = ({}) => {
 };
 
 BlogFeaturedSingle.propTypes = {
-  singlePost: PropTypes.object,
+  singlePost: PropTypes.object, // You may remove this if not used
 };
 
 export default BlogFeaturedSingle;

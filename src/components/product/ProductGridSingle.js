@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import imageBase from "../../constants/imageBase";
-import Rating from "./sub-components/ProductRating";
+// import Rating from "./sub-components/ProductRating";
 
 import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
 

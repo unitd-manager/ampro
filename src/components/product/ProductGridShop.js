@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import { Badge } from "reactstrap";
+// import { Badge } from "reactstrap";
 import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import imageBase from "../../constants/imageBase";
-import { useReducer } from "react";
+// import { useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
 import defaultImage from "../../assets/images/noimage.jpg";
@@ -34,7 +34,7 @@ const ProductGridSingleTwo = ({
 }) => {
   const [modalShow, setModalShow] = useState(false);
   const { addToast } = useToasts();
-  const[loginModal , setLoginModal]=useState(false);
+  // const[loginModal , setLoginModal]=useState(false);
 
   const dispatch=useDispatch();
 

@@ -5,7 +5,7 @@ import { useToasts } from "react-toast-notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "../../components/product/ProductModal";
-import imageBase from "../../constants/imageBase";
+// import imageBase from "../../constants/imageBase";
 import "./TabProductTwo.css";
 
 import { removeWishlistData } from "../../redux/actions/wishlistItemActions";

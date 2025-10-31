@@ -6,7 +6,7 @@ import { getUser } from "../../../../src/common/user";
 
 const MobileNavMenu = ({ strings, categories }) => {
   const [user, setUser] = useState();
-
+console.log(user);
   useEffect(() => {
     const userinfo = getUser();
     setUser(userinfo);

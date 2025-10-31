@@ -6,7 +6,7 @@ import {
   Badge,
   Button,
   Col,
-  Input,
+  
   Modal,
   ModalBody,
   ModalHeader,
@@ -19,8 +19,8 @@ function ReturnOrderModal({ returnModal, setReturnModal, mobNo, newMobileNumber,
 const history = useHistory();
 const [userData, setUserData] = useState({ mobile: mobNo });
     const { addToast } = useToasts();
-  const [error, setError] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [error] = useState("");
+  // const [quantity, setQuantity] = useState(0);
 
 
   const handleUserData = (e) => {

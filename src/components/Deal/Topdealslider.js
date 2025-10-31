@@ -1,15 +1,15 @@
 import PropTypes from "prop-types";
 import React,{useEffect,useState} from "react";
-import Swiper from "react-id-swiper";
-import SectionTitle from "../../components/section-title/SectionTitle";
-import DealProductGrid from "./DealProductGrid";
-import ProductGridTwo from "../../wrappers/product/ProductGridTwo";
+// import Swiper from "react-id-swiper";
+// import SectionTitle from "../../components/section-title/SectionTitle";
+// import DealProductGrid from "./DealProductGrid";
+// import ProductGridTwo from "../../wrappers/product/ProductGridTwo";
 import { useToasts } from "react-toast-notifications";
 import { connect } from "react-redux";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist } from "../../redux/actions/wishlistActions";
 import { addToCompare } from "../../redux/actions/compareActions";
-import api from "../../constants/api";
+// import api from "../../constants/api";
 import LoginModal from "../../components/LoginModal";
 import TopDealSingle from "./TopDealSingle";
 import { getUser } from "../../common/user";
@@ -33,44 +33,44 @@ const Topdealslider = ({products, spaceBottomClass, category ,
   insertCompareData,
 insertWishlistData}) => {
     
-  const setting = {
-    loop: false,
-    slidesPerView: 4,
-    grabCursor: true,
-    breakpoints: {
-      1024: {
-        slidesPerView: 4
-      },
-      768: {
-        slidesPerView: 3
-      },
-      640: {
-        slidesPerView: 2
-      },
-      320: {
-        slidesPerView: 1
-      }
-    }
-  };
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
-  };
+  // const setting = {
+  //   loop: false,
+  //   slidesPerView: 4,
+  //   grabCursor: true,
+  //   breakpoints: {
+  //     1024: {
+  //       slidesPerView: 4
+  //     },
+  //     768: {
+  //       slidesPerView: 3
+  //     },
+  //     640: {
+  //       slidesPerView: 2
+  //     },
+  //     320: {
+  //       slidesPerView: 1
+  //     }
+  //   }
+  // };
+  // const responsive = {
+  //   superLargeDesktop: {
+  //     // the naming can be any, depends on you.
+  //     breakpoint: { max: 4000, min: 3000 },
+  //     items: 5
+  //   },
+  //   desktop: {
+  //     breakpoint: { max: 3000, min: 1024 },
+  //     items: 3
+  //   },
+  //   tablet: {
+  //     breakpoint: { max: 1024, min: 464 },
+  //     items: 2
+  //   },
+  //   mobile: {
+  //     breakpoint: { max: 464, min: 0 },
+  //     items: 1
+  //   }
+  // };
   const [user, setUser] = useState();
   const [loginModal,setLoginModal]=useState(false);
 const {addToast}=useToasts();

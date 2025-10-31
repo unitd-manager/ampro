@@ -1,6 +1,6 @@
 import React from 'react'
 import Rating from "./sub-components/ProductRating";
-import RatingComment from './RatingComment';
+// import RatingComment from './RatingComment';
 import Review from '../../pages/other/Review';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 

@@ -4,17 +4,17 @@ import Layout from "../../layouts/Layout";
 import TabProductTwo from "../../wrappers/product/TabProduct";
 import TabProductThree from "../../wrappers/product/BestSeller";
 import TabProductFour from "../../wrappers/product/MostPopular";
-import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIcon";
+// import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIcon";
 import FeatureIcon from "../../wrappers/feature-icon/FeatureIcon";
 
-import BlogFeatured from "../../wrappers/blog-featured/BlogFeatured";
+// import BlogFeatured from "../../wrappers/blog-featured/BlogFeatured";
 import DealProductSlider from "../../components/DealSlider";
 // import HeroSlider from "../../wrappers/hero-slider/HeroSlider";
 import api from "../../constants/api";
 import HeroSliderNine from "../../wrappers/hero-slider/HeroSliderNine";
-import TopBrands from "../../components/TopBrands";
+// import TopBrands from "../../components/TopBrands";
 import FeaturesSection from "../../components/FeaturesSection";
-import DiscountModal from "../../components/DiscountModal";
+// import DiscountModal from "../../components/DiscountModal";
 import USPSection from "../../components/USPSection";
 
 import "../../assets/scss/_home-redesign.scss";

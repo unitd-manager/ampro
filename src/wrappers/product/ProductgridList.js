@@ -6,9 +6,9 @@ import { connect, useDispatch } from "react-redux";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist, deleteFromWishlist } from "../../redux/actions/wishlistActions";
 import { addToCompare } from "../../redux/actions/compareActions";
-import ProductGridSingleTwo from "../../components/product/ProductGridSingleTwo";
+// import ProductGridSingleTwo from "../../components/product/ProductGridSingleTwo";
 import ProductGridSingleThree from "../../components/product/ProductGridShop";
-import api from "../../constants/api";
+// import api from "../../constants/api";
 import LoginModal from "../../components/LoginModal";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../common/user";
@@ -36,7 +36,8 @@ const ProductGrid = ({
 const[user,setUser]=useState();
 const[loginModal,setLoginModal]=useState(false);
 const [sessionId, setSessionId] = useState('');
-const { id } = useParams();
+console.log(sessionId)
+// const { id } = useParams();
 console.log('user',user)
 const dispatch=useDispatch();
 

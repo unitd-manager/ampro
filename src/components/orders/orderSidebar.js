@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 
 import OrderSearch from "./orderSearch";
 import OrderCategories from "./orderCategories";

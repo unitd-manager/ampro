@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import LayoutOne from "../../layouts/Layout";
-import { Row, Col, Container } from "reactstrap";
+// import LayoutOne from "../../layouts/Layout";
+// import { Row, Col, Container } from "reactstrap";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useToasts } from "react-toast-notifications";
 import api from "../../constants/api";

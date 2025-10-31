@@ -3,7 +3,7 @@ import Lottie from 'react-lottie'
 import Loading from './loading.json'
 
 function LottieComponent() {
-    const { loading, setLoading } = useState(false);
+    const { loading} = useState(false);
 
   const defaultOptions = {
     loop: true,

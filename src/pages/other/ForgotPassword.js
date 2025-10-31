@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState,useEffect } from "react";
 import MetaTags from "react-meta-tags";
-import { Link, useHistory } from "react-router-dom";
+// import {  useHistory } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { useToasts } from "react-toast-notifications";
 import Tab from "react-bootstrap/Tab";
@@ -17,7 +17,7 @@ const ForgotPassword = ({ location }) => {
   const [contactMails, setContactMails] = useState([]);
 
   const { addToast } = useToasts();
-  const history = useHistory();
+  // const history = useHistory();
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -57,7 +57,7 @@ useEffect(()=>{
     console.log("error");
   });
 },[])
-  const signin = (event) => {};
+  // const signin = (event) => {};
   return (
     <Fragment>
       <MetaTags>

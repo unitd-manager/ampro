@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from 'prop-types'
 import { Modal} from 'react-bootstrap'
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import Register from "./auth/Register";
 import LoginForModal from "./auth/LoginForModal";
-import api from "../constants/api";
-import { useToasts } from "react-toast-notifications";
 
 function LoginModal({loginModal,setLoginModal}) {
   

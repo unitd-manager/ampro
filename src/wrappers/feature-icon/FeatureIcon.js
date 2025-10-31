@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import featureIconData from "../../data/feature-icons/feature-icon-two.json";
+// import featureIconData from "../../data/feature-icons/feature-icon-two.json";
 import FeatureIconTwoSingle from "../../components/feature-icon/FeatureIconSingle.js";
 import api from "../../constants/api";
 

@@ -5,10 +5,10 @@ import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import imageBase from "../../constants/imageBase";
-import { Badge } from "reactstrap";
+// import { Badge } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const ProductRelatedSingle = ({
   product,

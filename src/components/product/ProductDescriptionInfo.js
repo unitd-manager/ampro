@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"; 
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from 'uuid';
@@ -46,7 +46,8 @@ const ProductDescriptionInfo = ({
   const [sessionId, setSessionId] = useState('');
   const [loginModal, setLoginModal] = useState(false);
   const [proRating, setProRating] = useState(0);
-  const [selectedProductGrade, setSelectedProductGrade] = useState("");
+  // const [selectedProductGrade, setSelectedProductGrade] = useState("");
+  console.log(sessionId,proRating);
 
   const dispatch = useDispatch();
   const wishlistItems = useSelector(state => state.wishlistItems.wishlistItems);
@@ -96,7 +97,7 @@ const ProductDescriptionInfo = ({
               String(grade).trim() !== ''
     );
   };
-
+console.log(hasValidGrades);
   useEffect(() => {
     const userData = localStorage.getItem('user') ? localStorage.getItem('user') : null;
     const userInfo = JSON.parse(userData);

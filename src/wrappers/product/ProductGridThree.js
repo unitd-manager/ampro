@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import React, { Fragment,useState,useEffect } from "react";
 import { useToasts } from "react-toast-notifications";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch} from "react-redux";
 // import { getProducts } from "../../helpers/product";
 import ProductGridSingleThree from "../../components/product/ProductGridSingleThree";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist } from "../../redux/actions/wishlistActions";
 import { addToCompare } from "../../redux/actions/compareActions";
-import api from "../../constants/api";
+// import api from "../../constants/api";
 import LoginModal from "../../components/LoginModal";
 import { getUser } from "../../common/user";
 import { fetchCartData, insertCartData,updateCartData } from "../../redux/actions/cartItemActions";

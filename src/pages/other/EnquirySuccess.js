@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const EnquirySuccess = ({ location }) => {

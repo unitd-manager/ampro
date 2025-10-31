@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+// import { useEffect } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../../constants/api";
+// import api from "../../constants/api";
 import imageBase from "../../constants/imageBase";
 
 const BlogPosts = ({ products, layout }) => {

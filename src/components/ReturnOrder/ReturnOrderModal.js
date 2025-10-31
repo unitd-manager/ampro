@@ -1,12 +1,12 @@
 import React,{useState} from 'react'
 import PropTypes from 'prop-types'
-import { useToasts } from 'react-toast-notifications';
+// import { useToasts } from 'react-toast-notifications';
 import { Badge, Button, Col, Input, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import api from '../../constants/api';
 
 function ReturnOrderModal({returnModal,setReturnModal,item}) {
 
-    const addToast=useToasts();
+    // const addToast=useToasts();
 const[error, setError]=useState('');
 const[quantity,setQuantity]=useState(0);
 
@@ -29,7 +29,7 @@ api.post('orders/editReturnOrderItem',item).then((res)=>{
 <ModalHeader><Row><Col md={12}><span>Return Items</span></Col><span onClick={()=>{setReturnModal(false)}} style={{cursor:'pointer'}}><Badge>x</Badge></span></Row></ModalHeader>
 <ModalBody>
 <div>
-    {error !=''&& <span>{error}</span>}
+    {error !==''&& <span>{error}</span>}
     <Row>
        <Col> Return Quantity</Col>
     </Row>

@@ -623,9 +623,9 @@ export const setActiveSort = e => {
   e.currentTarget.classList.add("active");
 };
 export const setInactiveSort = e => {
-  const filterButtons = document.querySelectorAll(
-    ".sidebar-widget-list-left button, .sidebar-widget-tag button, .product-filter button"
-  );
+  // const filterButtons = document.querySelectorAll(
+  //   ".sidebar-widget-list-left button, .sidebar-widget-tag button, .product-filter button"
+  // );
   // filterButtons.forEach(item => {
   //   item.classList.remove("active");
   // });

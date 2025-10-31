@@ -11,7 +11,6 @@ import { useLocation, useHistory } from "react-router-dom";
 import OrderSidebar from "../../components/orders/orderSidebar";
 import OrderTopbar from "../../components/orders/orderTopbar";
 import OrderLists from "../../components/orders/orderLists";
-import useOrderData from "../../common/useOrderData";
 import api from "../../constants/api";
 import { getUser } from "../../common/user";
 
@@ -26,108 +25,73 @@ const Orders = ({ products }) => {
   const [currentData, setCurrentData] = useState([]);
   const [sortedProducts, setSortedProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [orders, setOrders] = useState([]);
   const [user, setUser] = useState({});
 
   const location = useLocation();
   const history = useHistory();
-
-  console.log("search", searchQuery);
-
-  useEffect(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
-    const query = urlSearchParams.get("search");
-    if (query) {
-      setSearchQuery(query);
-      api
-        .post(`/orders/getOrderHistoryBySearch`, {
-          keyword: query,
-          contact_id: user.contact_id,
-        })
-        .then((res) => {
-          setOrders(res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      api
-        .post("/orders/getOrderHistoryByContactId", {
-          contact_id: user.contact_id,
-          
-        })
-        .then((res) => {
-          setOrders(res.data.data);
-          console.log("orders", res.data.data);
-        })
-        .catch((err) => console.log(err));
-    }
-    console.log("searchquery", query);
-  }, [location]);
-
-  const data = useOrderData(
-    orders
-    // category,
-    // router.query.q
-  );
-
   const pageLimit = 15;
   const { pathname } = location;
 
-  const getLayout = (layout) => {
-    setLayout(layout);
-  };
-
-  const getSortParams = (sortType, sortValue) => {
-    setSortType(sortType);
-    setSortValue(sortValue);
-  };
-
-  const getFilterSortParams = (sortType, sortValue) => {
-    setFilterSortType(sortType);
-    setFilterSortValue(sortValue);
-  };
-
-  const [orders, setOrders] = useState([]);
-
+  // ✅ Load user and default orders on mount
   useEffect(() => {
     const userData = getUser();
-
-    if (userData) {
+    if (userData?.contact_id) {
+      setUser(userData);
       api
         .post("/orders/getOrderHistoryByContactId", {
           contact_id: userData.contact_id,
         })
         .then((res) => {
           setOrders(res.data.data);
-          console.log("orders", res.data.data);
         })
         .catch((err) => console.log(err));
-
-      setUser(userData);
     }
   }, []);
 
+  // ✅ Search-based orders fetch
+  useEffect(() => {
+    const query = new URLSearchParams(location.search).get("search");
+    if (!user.contact_id) return;
+
+    if (query) {
+      setSearchQuery(query);
+      api
+        .post("/orders/getOrderHistoryBySearch", {
+          keyword: query,
+          contact_id: user.contact_id,
+        })
+        .then((res) => {
+          setOrders(res.data.data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      api
+        .post("/orders/getOrderHistoryByContactId", {
+          contact_id: user.contact_id,
+        })
+        .then((res) => {
+          setOrders(res.data.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [location, user.contact_id]);
+
+  // ✅ Sorting and pagination logic
   useEffect(() => {
     const filter = async () => {
-      let sortedProducts = await getSortedOrders(
-        orders,
-        user,
-        sortType,
-        sortValue
-      );
-      const filterSortedProducts = getSortedOrders(
-        sortedProducts,
-        filterSortType,
-        filterSortValue
-      );
+      if (!orders.length) return;
 
-      sortedProducts = filterSortedProducts;
-      console.log("sorted orders", sortedProducts);
-      setSortedProducts(sortedProducts);
-      setCurrentData(sortedProducts.slice(offset, offset + pageLimit));
+      let sorted = await getSortedOrders(orders, user, sortType, sortValue);
+      sorted = getSortedOrders(sorted, filterSortType, filterSortValue);
+
+      setSortedProducts(sorted);
+      setCurrentData(sorted.slice(offset, offset + pageLimit));
     };
     filter();
-  }, [offset, orders, sortType, sortValue, filterSortType, filterSortValue]);
+  }, [offset, orders, sortType, sortValue, filterSortType, filterSortValue, user]);
+
+  // ✅ Handlers
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     history.push(`?search=${searchQuery}`);
@@ -136,30 +100,39 @@ const Orders = ({ products }) => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  const getLayout = (layout) => {
+    setLayout(layout);
+  };
+
+  const getSortParams = (type, value) => {
+    setSortType(type);
+    setSortValue(value);
+  };
+
+  const getFilterSortParams = (type, value) => {
+    setFilterSortType(type);
+    setFilterSortValue(value);
+  };
+
   return (
     <Fragment>
       <MetaTags>
         <title>Ampro | Orders</title>
-        <meta
-          name="description"
-          content="Shop page of Ampro react minimalist eCommerce template."
-        />
+        <meta name="description" content="Order history page of Ampro eCommerce." />
       </MetaTags>
 
       <BreadcrumbsItem to={process.env.PUBLIC_URL + "/"}>Home</BreadcrumbsItem>
-      <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>
-        Orders
-      </BreadcrumbsItem>
+      <BreadcrumbsItem to={process.env.PUBLIC_URL + pathname}>Orders</BreadcrumbsItem>
 
       <LayoutOne headerTop="visible">
-        {/* breadcrumb */}
         <Breadcrumb />
 
         <div className="shop-area pt-95 pb-100">
           <div className="container">
             <div className="row">
+              {/* Sidebar */}
               <div className="col-lg-2 order-2 order-lg-1">
-                {/* shop sidebar */}
                 <OrderSidebar
                   products={orders}
                   getSortParams={getSortParams}
@@ -168,8 +141,9 @@ const Orders = ({ products }) => {
                   sideSpaceClass="mr-10"
                 />
               </div>
+
+              {/* Main Content */}
               <div className="col-lg-10 order-1 order-lg-2">
-                {/* shop topbar default */}
                 <OrderTopbar
                   getLayout={getLayout}
                   getFilterSortParams={getFilterSortParams}
@@ -177,10 +151,9 @@ const Orders = ({ products }) => {
                   sortedProductCount={currentData.length}
                 />
 
-                {/* shop page content default */}
                 <OrderLists layout={layout} products={currentData} />
 
-                {/* shop product pagination */}
+                {/* Pagination */}
                 <div className="pro-pagination-style text-center mt-30">
                   <Paginator
                     totalRecords={sortedProducts.length}
@@ -208,10 +181,8 @@ Orders.propTypes = {
   products: PropTypes.array,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    products: state.productData.products,
-  };
-};
+const mapStateToProps = (state) => ({
+  products: state.productData.products,
+});
 
 export default connect(mapStateToProps)(Orders);

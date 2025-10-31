@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { FaArrowLeft, FaUpload, FaWhatsapp, FaFileDownload, FaFilePdf, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaUpload,  FaFileDownload, FaFilePdf, FaTrash } from "react-icons/fa";
 import { useHistory, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LayoutOne from "../../layouts/Layout";
 import api from "../../constants/api";
 import moment from "moment";
 import { useToasts } from "react-toast-notifications";
-import { Alert, Badge, Button, Card, Col, Row } from "reactstrap";
+import {  Badge,  Card, Col, Row } from "reactstrap";
 import { Form } from "react-bootstrap";
 import ProductsLinkedModal from "../../components/EnquiryProductsLinked";
 import Swal from "sweetalert2";
