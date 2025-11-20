@@ -68,13 +68,35 @@ import {
           error: null,
         };
       case REMOVE_WISHLIST_DATA_SUCCESS:
-        const filteredItems = state.wishlistItems.filter(
-          (item) => item.wish_list_id !== action.payload.wish_list_id
-        );
+        // Safely remove by wish_list_id when available; fallback to product_id if provided.
+        // Prevent accidental removal when identifier is undefined.
+        const idToRemove = action.payload && action.payload.wish_list_id;
+        const productIdToRemove = action.payload && action.payload.product_id;
+
+        if (idToRemove !== undefined && idToRemove !== null) {
+          return {
+            ...state,
+            loading: false,
+            wishlistItems: state.wishlistItems.filter(
+              (item) => item.wish_list_id !== idToRemove
+            ),
+          };
+        }
+
+        if (productIdToRemove !== undefined && productIdToRemove !== null) {
+          return {
+            ...state,
+            loading: false,
+            wishlistItems: state.wishlistItems.filter(
+              (item) => item.product_id !== productIdToRemove
+            ),
+          };
+        }
+
+        // If no valid identifier is provided, do not modify the list.
         return {
           ...state,
           loading: false,
-          wishlistItems: filteredItems
         };
       case REMOVE_WISHLIST_DATA_FAILURE:
         return {

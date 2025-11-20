@@ -8,6 +8,7 @@ import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import StripeCheckout from "react-stripe-checkout";
+import CheckoutRazorpay from "./CheckoutRazorpay";
 import { useToasts } from "react-toast-notifications";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import api from "../../constants/api";
@@ -111,6 +112,7 @@ stripeToken && makeRequest();
       orderDetail.cust_first_name = userData.first_name;
       orderDetail.cust_last_name = userData.last_name;
       orderDetail.cust_email = userData.email;
+      orderDetail.total_amount = cartTotalPrice;
       orderDetail.cust_address1 = userData.address1;
       orderDetail.cust_address2 = userData.address2;
       orderDetail.cust_address_area = userData.address_area;
@@ -122,6 +124,7 @@ stripeToken && makeRequest();
       orderDetail.cust_address_country = userData.address_country;
       orderDetail.cust_address_state = userData.address_state;
       orderDetail.order_status =os;
+      orderDetail.payment_method = "RazorPay";
       console.log("orderDetail", orderDetail);
       api
         .post("/orders/insertorders", orderDetail)
@@ -185,7 +188,7 @@ stripeToken && makeRequest();
         })
       })
       .catch(() => {
-        addToast("Email Sent Successfully", {
+        addToast("Email Sentlly", {
           appearance: "success",
           autoDismiss: true,
         })
@@ -463,14 +466,9 @@ stripeToken && makeRequest();
                         </div>
                       </div>
                       <div className="payment-method">
-                        <StripeCheckout
-                          name="Ampro Store"
-                          description={`Your total is ${currency.currencySymbol}${cartTotalPrice.toFixed(2)}`}
+                        <CheckoutRazorpay
                           amount={cartTotalPrice * 100}
-                          token={onToken}
-                          stripeKey="pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
-                          currency={currency.currencyCode}
-                          email={userData?.email}
+                          placeOrder={placeOrder}
                         />
                       </div>
                     </div>

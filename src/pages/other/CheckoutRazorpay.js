@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 //import Razorpay from "razorpay";
 import PropTypes from "prop-types";
 import api from "../../constants/api";
-
+ 
 async function loadScript(src) {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
@@ -26,15 +26,15 @@ async function fetchExchangeRate() {
   return data.rates.INR;
 }
 
-function convertCurrency(amount, exchangeRate) {
-  return Math.round(amount * exchangeRate);
-}
+// function convertCurrency(amount, exchangeRate) {
+//   return Math.round(amount * exchangeRate);
+// }
 
 function CheckoutRazorpay({ amount, placeOrder}) {
   const [exchangeRate, setExchangeRate] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [ setIsProcessing] = useState(false);
   const getUser = () => {
    
     const userData = localStorage.getItem('user')
@@ -65,33 +65,60 @@ function CheckoutRazorpay({ amount, placeOrder}) {
   }, []);
   async function displayRazorpay() {
     try {
+      setIsProcessing(true);
       const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-  
+
       if (!res) {
         alert("Razorpay SDK failed to load.");
+        setIsProcessing(false);
         return;
       }
-  
+
       if (typeof window.Razorpay === "undefined") {
         throw new Error("Razorpay SDK not loaded.");
       }
-  
-      // Fetch data from your server
-      const data = await fetch("https://amproadmin.zaitunsoftsolutions.com:2004/contact/getRazorpayEmail", {
-        method: "POST",
-      }).then((t) => t.json());
-  
-      // Currency conversion logic here
-      //const convertedAmount = convertCurrency(amount, exchangeRate);
-      const convertedAmount = amount;
+
+      // Fetch data from your server. If it fails, fall back to localStorage/user info so Razorpay can still open.
+      let data = { cust_first_name: "", cust_email: "", cust_phone: "", currency: "INR" };
+      try {
+        const resp = await fetch(
+          "https://amproadmin.zaitunsoftsolutions.com:2004/contact/getRazorpayEmail",
+          { method: "POST" }
+        );
+        if (resp.ok) {
+          data = await resp.json();
+        } else {
+          console.warn("getRazorpayEmail returned non-OK status:", resp.status);
+        }
+      } catch (fetchErr) {
+        console.warn("Failed to fetch Razorpay email from server:", fetchErr);
+        // Try to prefill from localStorage user as a fallback
+        try {
+          const userData = localStorage.getItem("user");
+          if (userData) {
+            const userInfo = JSON.parse(userData);
+            data.cust_first_name = userInfo.first_name || "";
+            data.cust_email = userInfo.email || "";
+            data.cust_phone = userInfo.phone || "";
+          }
+        } catch (e) {
+          console.warn("Failed to parse local user for prefill", e);
+        }
+        // Inform the user but continue — the Razorpay widget can open without this endpoint.
+        // Do not return here; continue with fallback data.
+      }
+
+      // Currency conversion logic here (if you need conversion use exchangeRate)
+      const convertedAmount = amount || 0;
 
       const options = {
-        key: "rzp_test_yE3jJN90A3ObCp", // Enter the Key ID generated from the Dashboard
-        amount: convertedAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        currency: data.currency,
-        description: "Wallet Transaction",
-        image: "https://example.com/your_logo",
-  
+        key: "rzp_test_RhuQKq8G6AymUH", // Enter the Key ID generated from the Dashboard
+        amount: convertedAmount, // Amount is in currency subunits (paise)
+        currency: data.currency || "INR",
+        name: "United",
+        description: "Purchase Description",
+        image: "",
+
         handler: async function (response) {
           if (response.error) {
             // Handle error scenario
@@ -102,18 +129,16 @@ function CheckoutRazorpay({ amount, placeOrder}) {
           } else {
             // Handle success scenario
             setError(null);
-           
+
             setSuccess(true);
             const orderStatus = "Paid";
             await placeOrder(orderStatus);
-            getUser()
-         
-            // Use the paymentMethod object to make a payment request to your server.
-            // You can send the paymentMethod.id to your server to complete the payment.
+            getUser();
+
             setIsProcessing(false);
           }
         },
-  
+
         prefill: {
           name: data.cust_first_name,
           email: data.cust_email,
@@ -126,80 +151,19 @@ function CheckoutRazorpay({ amount, placeOrder}) {
           color: "#3399cc",
         },
       };
-  
+
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
     } catch (error) {
       console.error("Error in Razorpay setup:", error);
+      setIsProcessing(false);
+      // Provide user-friendly message
+      alert("Payment initialization failed. Please try again later or contact support.");
     }
   }
   
 
-  // async function displayRazorpay() {
-  //   const res = await loadScript(
-  //     "https://checkout.razorpay.com/v1/checkout.js"
-  //   ).then((t) => console.log('t',t))
-  //   .catch(error => {
-  //     console.error("Failed to fetch Razorpay email:", error);
-  //     return null;
-  //   });
-  //   console.log("res",res);
-  //   if (!res) {
-  //     alert("Razorpay failed to load!!");
-  //     return;
-  //   }
-
-  //   const data = await fetch(
-  //     "https://unitdecom.unitdtechnologies.com:3006/contact/getRazorpayEmail",
-  //     { method: "POST" }
-  //   ).then((t) => t.json());
-
-  //   console.log(data);
-
-  //   const convertedAmount = convertCurrency(amount, exchangeRate);
-
-  //   const options = {
-  //     key: "rzp_test_yE3jJN90A3ObCp", // Enter the Key ID generated from the Dashboard
-  //     amount: convertedAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-  //     currency: data.currency,
-  //     description: "Wallet Transaction",
-  //     image: "https://example.com/your_logo",
-
-  //     handler: async function (response) {
-  //       if (response.error) {
-  //         // Handle error scenario
-  //         setError(response.error.message);
-  //         setSuccess(false);
-  //         const orderStatus = "Due";
-  //         await placeOrder(orderStatus);
-  //       } else {
-  //         // Handle success scenario
-  //         setError(null);
-  //         setSuccess(true);
-  //         const orderStatus = "Paid";
-  //         await placeOrder(orderStatus);
-  //         // Use the paymentMethod object to make a payment request to your server.
-  //         // You can send the paymentMethod.id to your server to complete the payment.
-  //         setIsProcessing(false);
-  //       }
-  //     },
-
-  //     prefill: {
-  //       name: data.cust_first_name,
-  //       email: data.cust_email,
-  //       contact: data.cust_phone,
-  //     },
-  //     notes: {
-  //       address: "Razorpay Corporate Office",
-  //     },
-  //     theme: {
-  //       color: "#3399cc",
-  //     },
-  //   };
-
-  //   const paymentObject = new window.Razorpay(options);
-  //   paymentObject.open();
-  // }
+  
 
   return (
     <div className="App">

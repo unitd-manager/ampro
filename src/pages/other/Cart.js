@@ -69,8 +69,10 @@ const Cart = ({ location }) => {
 
   useEffect(() => {
     if (user) dispatch(fetchCartData(user));
-    api.get("/setting/getMailId").then((res) => setMailId(res.data.data[0]));
-  }, [dispatch, user]);
+    if (!mailId) {
+      api.get("/setting/getMailId").then((res) => setMailId(res.data.data[0]));
+    }
+  }, [dispatch, user, mailId]);
 
   const handleProceedToCheckout = () => {
     history.push('/checkout', cartItems);
