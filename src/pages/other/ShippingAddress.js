@@ -22,9 +22,9 @@ const EnquiryHistory = () => {
     address_po_code: "",
   });
 
-  useEffect(() => {
-    fetchAddresses();
-  }, []);
+  // useEffect(() => {
+  //   fetchAddresses();
+  // }, []);
 
   const fetchAddresses = () => {
     api
