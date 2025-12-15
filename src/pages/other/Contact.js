@@ -123,9 +123,8 @@ export default function Contact({ location }) {
   };
 
   const sendMail = () => {
-    const to = mailId.email;
-    const text = user.comments;
-    const subject = user.email;
+   
+   
     const dynamic_template_data = {
       first_name: user.first_name,
       email: user.email,
@@ -134,9 +133,7 @@ export default function Contact({ location }) {
   
     api
       .post("/commonApi/sendemail", {
-        to,
-        text,
-        subject,
+      
         dynamic_template_data,
       })
       .then(() => {
