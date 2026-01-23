@@ -22,9 +22,9 @@ const EnquiryHistory = () => {
     address_po_code: "",
   });
 
-  // useEffect(() => {
-  //   fetchAddresses();
-  // }, []);
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
 
   const fetchAddresses = () => {
     api
@@ -147,17 +147,14 @@ const EnquiryHistory = () => {
         {/* Enquiries List */}
         <div className="container">
           <div className="row shippingAddress">
-          {enquiries?.map((enquiry, index) => {
+          {enquiries&&enquiries.map((enquiry, index) => {
               return (
                 <div key={index} className="col-md-6 mb-3">
                   <div className="card shadow-sm">
                     <div className="card-body">
                       <h6 className="card-title">{enquiry.shipper_name}</h6>
                       <p className="text-muted">
-                        {enquiry.address_flat}, {enquiry.address_street}, {enquiry.address_town}
-                      </p>
-                      <p className="text-muted">
-                        {enquiry.address_state}, {enquiry.address_country} {enquiry.address_po_code}
+                        {enquiry.address_flat}, {enquiry.address_street}, {enquiry.address_town}, {enquiry.address_state}, {enquiry.address_country}, {enquiry.address_po_code}
                       </p>
                       <div className="d-flex justify-content-end">
                         <button
@@ -221,12 +218,12 @@ const EnquiryHistory = () => {
                     />
                   </div>
                 ))}
-                <div className="mb-2">
+                {/* <div className="mb-2">
                   <select className="form-control" name="address_type" value={newAddress.address_type} onChange={handleInputChange}>
                     <option value="Shipping">Shipping</option>
                     <option value="Delivery">Delivery</option>
                   </select>
-                </div>
+                </div> */}
               </div>
               <div className="modal-footer">
                 <button
