@@ -7,25 +7,21 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/Layout";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import StripeCheckout from "react-stripe-checkout";
-import CheckoutRazorpay from "./CheckoutRazorpay";
+// import StripeCheckout from "react-stripe-checkout";
+// import CheckoutRazorpay from "./CheckoutRazorpay";
 import { useToasts } from "react-toast-notifications";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import api from "../../constants/api";
 import { getUser } from "../../common/user";
 import { loadStripe } from "@stripe/stripe-js";
-import Payment from "../../components/Payment";
+import StripeContainer from "../../components/StripeContainer";
+import PaymentModal from "../../components/PaymentModal";
 import Stripe from "stripe";
 import { Input } from "reactstrap";
 import InstaPay from "./InstaPay";
 import { clearCartData } from "../../redux/actions/cartItemActions";
 
-const stripePromise = loadStripe(
-  "pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3"
-);
-const stripe = Stripe(
-  "sk_test_51KX4uOSJWiuYw3gIHasMc0HZONGNydONE1kA9BPa2MpTDYQySDEAVVsBqoCRtpnKbPlscBgQzkqY1JGqKBO8pLl300spdpbXRm"
-);
+// Stripe keys removed for security compliance
 
 const Checkout = ({
   location,
@@ -35,6 +31,7 @@ const Checkout = ({
   let cartTotalPrice = 0;
   const history = useHistory();
   const [stripeToken, setStripeToken]=useState();
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const pay = async (token) => {
     api
@@ -466,10 +463,15 @@ stripeToken && makeRequest();
                         </div>
                       </div>
                       <div className="payment-method">
-                        <CheckoutRazorpay
-                          amount={cartTotalPrice * 100}
-                          placeOrder={placeOrder}
-                        />
+                        <button className="btn-hover" type="button" onClick={() => setShowPaymentModal(true)}>
+                          Proceed with checkout
+                        </button>
+                        <PaymentModal isOpen={showPaymentModal} toggle={() => setShowPaymentModal(false)}>
+                          <StripeContainer onPaymentSuccess={() => {
+                            setShowPaymentModal(false);
+                            placeOrder('Paid');
+                          }} />
+                        </PaymentModal>
                       </div>
                     </div>
                     {/* <div className="place-order mt-25">

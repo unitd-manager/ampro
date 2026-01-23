@@ -1,3 +1,4 @@
+import "./assets/css/payment-modal.css";
 import PropTypes from "prop-types";
 import React, { useEffect, Suspense, lazy } from "react";
 import ScrollToTop from "./helpers/scroll-top";

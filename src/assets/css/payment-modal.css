@@ -1,0 +1,91 @@
+.payment-modal-content {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37), 0 1.5px 6px 0 rgba(0,0,0,0.10);
+  background: linear-gradient(135deg, #f8fafc 60%, #e0e7ef 100%);
+  border-radius: 18px;
+  border: 1.5px solid #e3e8f0;
+  padding: 48px 40px;
+  min-width: 520px;
+  max-width: 650px;
+  width: 100%;
+  margin: auto;
+  position: relative;
+  transition: box-shadow 0.3s;
+}
+
+.payment-modal-content:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(31, 38, 135, 0.10) inset;
+  pointer-events: none;
+}
+
+.payment-modal-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-modal-content label {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #2d3748;
+}
+
+.payment-modal-content .StripeElement {
+  background: linear-gradient(135deg, #f4f7fa 70%, #e0e7ef 100%);
+  border-radius: 10px;
+  border: 1.5px solid #b6c3d1;
+  padding: 22px 32px;
+  font-size: 22px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.10);
+  transition: border 0.2s, box-shadow 0.2s;
+  width: 440px;
+  max-width: 100%;
+  min-width: 320px;
+}
+
+.payment-modal-content button[type="submit"] {
+  background: linear-gradient(90deg, #4f8cff 0%, #2355d8 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.10);
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.payment-modal-content button[type="submit"]:hover {
+  background: linear-gradient(90deg, #2355d8 0%, #4f8cff 100%);
+  box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.18);
+}
+
+.payment-modal-content .StripeElement--focus {
+  border: 1.5px solid #4f8cff;
+}
+
+.payment-modal-content .StripeElement--invalid {
+  border: 1.5px solid #e53e3e;
+}
+
+.payment-modal-content .StripeElement--webkit-autofill {
+  background: #e0e7ef !important;
+}
+
+.payment-modal-content .payment-success {
+  color: #38a169;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.payment-modal-content .payment-error {
+  color: #e53e3e;
+  font-weight: 600;
+  margin-top: 10px;
+}

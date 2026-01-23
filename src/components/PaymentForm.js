@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const PaymentForm = () => {
+const PaymentForm = ({ onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [error, setError] = useState(null);
@@ -29,6 +29,9 @@ const PaymentForm = () => {
     } else {
       setError(null);
       setSuccess(true);
+      if (onPaymentSuccess) {
+        onPaymentSuccess(paymentMethod);
+      }
       // Use the paymentMethod object to make a payment request to your server.
       // You can send the paymentMethod.id to your server to complete the payment.
       console.log(paymentMethod);
@@ -40,11 +43,27 @@ const PaymentForm = () => {
       <div>
         <label>
           Card details
-          <CardElement />
+          <div>
+            <CardElement options={{
+              style: {
+                base: {
+                  fontSize: '18px',
+                  color: '#222',
+                  backgroundColor: '#fff',
+                  letterSpacing: '0.025em',
+                  fontFamily: 'inherit',
+                  '::placeholder': { color: '#aab7c4' },
+                },
+                invalid: {
+                  color: '#9e2146',
+                },
+              },
+            }} />
+          </div>
         </label>
       </div>
-      {error && <div>{error}</div>}
-      {success && <div>Payment successful!</div>}
+      {error && <div className="payment-error">{error}</div>}
+      {success && <div className="payment-success">Payment successful!</div>}
       <button type="submit" disabled={!stripe}>
         Pay
       </button>
