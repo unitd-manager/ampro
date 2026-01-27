@@ -415,7 +415,7 @@ const MyAccount = ({ location }) => {
                                 </div>
                               </div>
 
-                            <div className="col-12 col-md-6">
+                            {/* <div className="col-12 col-md-6">
                               {panError && <span className="error">{panError}</span>}
                               <div className="billing-info">
                                   <label>PAN</label>
@@ -468,7 +468,7 @@ const MyAccount = ({ location }) => {
                                     className="form-control"
                                   />
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
 
                             <div className="billing-back-btn">

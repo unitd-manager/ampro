@@ -67,6 +67,64 @@ const PaymentForm = ({ onPaymentSuccess }) => {
       <button type="submit" disabled={!stripe}>
         Pay
       </button>
+      
+      {/* Test Card Details */}
+      <div style={{
+        marginTop: '30px',
+        padding: '20px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '8px',
+        border: '1px solid #e0e0e0',
+      }}>
+        <h4 style={{
+          margin: '0 0 15px 0',
+          fontSize: '14px',
+          fontWeight: '600',
+          color: '#333',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}>
+          Test Card Details
+        </h4>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '12px',
+        }}>
+          <div>
+            <p style={{ margin: '0 0 6px 0', fontSize: '12px', color: '#666', fontWeight: '500' }}>
+              Card Number
+            </p>
+            <p style={{ margin: '0', fontSize: '14px', color: '#222', fontFamily: 'monospace', fontWeight: '600' }}>
+              4242 4242 4242 4242
+            </p>
+          </div>
+          <div>
+            <p style={{ margin: '0 0 6px 0', fontSize: '12px', color: '#666', fontWeight: '500' }}>
+              CVC
+            </p>
+            <p style={{ margin: '0', fontSize: '14px', color: '#222', fontFamily: 'monospace', fontWeight: '600' }}>
+              Any 3 digits
+            </p>
+          </div>
+          <div>
+            <p style={{ margin: '0 0 6px 0', fontSize: '12px', color: '#666', fontWeight: '500' }}>
+              Expiry Date
+            </p>
+            <p style={{ margin: '0', fontSize: '14px', color: '#222', fontFamily: 'monospace', fontWeight: '600' }}>
+              Any future date
+            </p>
+          </div>
+          <div>
+            <p style={{ margin: '0 0 6px 0', fontSize: '12px', color: '#666', fontWeight: '500' }}>
+              Postal Code
+            </p>
+            <p style={{ margin: '0', fontSize: '14px', color: '#222', fontFamily: 'monospace', fontWeight: '600' }}>
+              Any 5 digits
+            </p>
+          </div>
+        </div>
+      </div>
     </form>
   );
 };

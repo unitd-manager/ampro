@@ -81,8 +81,8 @@ const Footer = ({
               </div>
               <div className="footer-list">
                 <ul style={{ listStyle: "none", padding: 0 }}>
-                  {["/", "/about", "/shop", "/shop", "/contact", "/privacypolicypage", "/refundpolicypage", "/disclaimerpage"].map((path, idx) => {
-                    const labels = ["Home", "About Us", "Shop", "Collection", "Contact", "Privacy Policy", "Refund Policy", "Disclaimer"];
+                  {["/", "/about", "/shop", "/shop", "/contact", "/privacypolicypage", "/refundpolicypage"].map((path, idx) => {
+                    const labels = ["Home", "About Us", "Shop", "Collection", "Contact", "Privacy Policy", "Refund Policy"];
                     return (
                       <li key={idx} style={{ marginBottom: "8px" }}>
                         <Link

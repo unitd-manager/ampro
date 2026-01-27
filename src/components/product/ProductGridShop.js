@@ -9,7 +9,7 @@ import imageBase from "../../constants/imageBase";
 // import { useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeWishlistData } from "../../redux/actions/wishlistItemActions";
-import defaultImage from "../../assets/images/noimage.jpg";
+import defaultImage from "../../assets/images/noimage.png";
 
 const ProductGridSingleTwo = ({
   product,

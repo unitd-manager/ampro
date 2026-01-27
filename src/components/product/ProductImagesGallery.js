@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import imageBase from '../../constants/imageBase';
-import defaultImage from '../../assets/images/noimage.jpg';
+import defaultImage from '../../assets/images/noimage.png';
 
 const ProductImagesGallery = ({ product, productImages }) => {
   // Default to the first image

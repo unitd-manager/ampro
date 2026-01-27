@@ -32,7 +32,7 @@ const ProductGridSingle = ({
   const finalDiscountedPrice = discountedPrice ? +(discountedPrice * currency.currencyRate).toFixed(2) : finalProductPrice;
 
   product.images = String(product.images).split(",");
-  const formattedTitle = product.title.replace(/\s+/g, "-");
+  const formattedTitle = product.title.substring(0, 25).replace(/\s+/g, "-");
 
   return (
     <Fragment>
@@ -56,7 +56,7 @@ const ProductGridSingle = ({
           </div>
           <div className="product-content text-center">
             <h3>
-              <Link to={`${process.env.PUBLIC_URL}/product/${product.product_id}/${formattedTitle}`}>{product.title}</Link>
+              <Link to={`${process.env.PUBLIC_URL}/product/${product.product_id}/${formattedTitle}`}>{formattedTitle}</Link>
             </h3>
             <div className="product-price">
               {discountedPrice !== null ? (
