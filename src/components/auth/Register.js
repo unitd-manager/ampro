@@ -83,10 +83,10 @@ function Register() {
         hasError = true;
       }
 
-      if (!validateMobile(mobile)) {
-        setMobileError("Invalid Mobile Number");
-        hasError = true;
-      }
+      // if (!validateMobile(mobile)) {
+      //   setMobileError("Invalid Mobile Number");
+      //   hasError = true;
+      // }
       
       // Perform email and password validation
       if (!validateEmail(signupEmail)) {

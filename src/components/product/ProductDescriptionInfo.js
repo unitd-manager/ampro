@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { v4 as uuid } from 'uuid';
+import "./ProductDescriptionInfo.css";
 import { getProductCartQuantity } from "../../helpers/product";
 import { addToCart } from "../../redux/actions/cartActions";
 import { addToWishlist } from "../../redux/actions/wishlistActions";
@@ -196,6 +197,30 @@ console.log(hasValidGrades);
       )}
 
       <div className="pro-details-quality">
+        <div className="cart-plus-minus">
+          <button
+            onClick={() => setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)}
+            className="dec qtybutton"
+          >
+            -
+          </button>
+          <input
+            className="cart-plus-minus-box"
+            type="text"
+            value={quantityCount}
+            readOnly
+          />
+          <button
+            onClick={() =>
+              setQuantityCount(
+                quantityCount < productStock ? quantityCount + 1 : quantityCount
+              )
+            }
+            className="inc qtybutton"
+          >
+            +
+          </button>
+        </div>
         <div className="pro-details-cart btn-hover">
           {product && product.qty_in_stock > 0 ? (
             <button

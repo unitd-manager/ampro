@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
+import "./ProductModal.css";
 import Rating from "./sub-components/ProductRating";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/actions/cartActions";
